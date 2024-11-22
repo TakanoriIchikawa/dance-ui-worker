@@ -1,41 +1,37 @@
-// interface/converters/userConverter.ts
 import type { UserApi } from "@/interface/api/UserApi";
 import type { User } from "@/interface/entities/User";
+import { convertStudentApiToStudent } from "./studentConverter";
 import dayjs from "dayjs";
 
-export const convertUserApiToUser = (userApi: UserApi): User => {
+export const convertUserApiToUser = (data: UserApi): User => {
   return {
-    id: userApi.id,
-    name: userApi.name,
-    email: userApi.email,
-    image: userApi.image,
-    gender: userApi.gender,
-    genderText: getGenderText(userApi.gender),
-    dateOfBirth: userApi.date_of_birth ? dayjs(userApi.date_of_birth).format("YYYY-MM-DD") : null,
-    firstName: userApi.first_name,
-    lastName: userApi.last_name,
-    firstNameKana: userApi.first_name_kana,
-    lastNameKana: userApi.last_name_kana,
-    tel: userApi.tel,
-    postCode: userApi.post_code,
-    prefecture: userApi.prefecture,
-    city: userApi.city,
-    town: userApi.town,
-    address: userApi.address,
-    createdAt: dayjs(userApi.created_at).format('YYYY-MM-DD HH:mm:ss'),
-    updatedAt: dayjs(userApi.updated_at).format('YYYY-MM-DD HH:mm:ss'),
-  };
-};
+    id: data.id,
+    email: data.email,
+    nickname: data.nickname,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    firstNameKana: data.first_name_kana,
+    lastNameKana: data.last_name_kana,
+    image: data.image,
+    gender: data.gender,
+    dateOfBirth: data.date_of_birth ? dayjs(data.date_of_birth).format("YYYY-MM-DD") : null,
+    tel: data.tel,
+    postalCode: data.postal_code,
+    prefecture: data.prefecture,
+    city: data.city,
+    town: data.town,
+    building: data.building,
+    createdAt: dayjs(data.created_at).format("YYYY-MM-DD HH:mm:ss"),
+    updatedAt: dayjs(data.updated_at).format("YYYY-MM-DD HH:mm:ss"),
 
-const getGenderText = (gender: "male" | "female" | "other" | null): string => {
-  switch (gender) {
-    case "male":
-      return "男性";
-    case "female":
-      return "女性";
-    case "other":
-      return "その他";
-    default:
-      return "";
-  }
+    /** Accessors */
+    fullName: data.full_name,
+    address: data.address,
+
+    /** Relations */
+    students: data.students ? data.students.map(convertStudentApiToStudent) : [],
+
+    /** Texts */
+    genderText: data.gender_text,
+  };
 };

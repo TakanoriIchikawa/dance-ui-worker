@@ -1,21 +1,32 @@
+import type { Student } from "./Student";
+
 export interface User {
   id: string;
-  name: string;
   email: string;
-  image: string;
+  nickname: string | null;
+  firstName: string | null;
+  lastName: string | null;
+  firstNameKana: string | null;
+  lastNameKana: string | null;
+  image: string | null;
   gender: "male" | "female" | "other" | null;
-  genderText: string;
   dateOfBirth: string | null;
-  firstName: string;
-  lastName: string;
-  firstNameKana: string;
-  lastNameKana: string;
-  tel: string;
-  postCode: string;
-  prefecture: string;
-  city: string;
-  town: string;
-  address: string;
+  tel: string | null;
+  postalCode: string | null;
+  prefecture: string | null;
+  city: string | null;
+  town: string | null;
+  building: string | null;
   createdAt: string;
   updatedAt: string;
+
+  /** Accessors */
+  fullName: string | null;
+  address: string | null;
+
+  /** Relations */
+  students: Student[];
+
+  /** Texts */
+  genderText: string | null;
 }

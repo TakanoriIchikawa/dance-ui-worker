@@ -1,13 +1,13 @@
 <script setup lang="ts">
+definePageMeta({ middleware: ["auth"] });
+
+const { breadcrumbs } = useBreadcrumbs();
+
+breadcrumbs.value = [{ title: "ホーム", to: "/" }];
 </script>
 
 <template>
   <div>
-    <div class="text-3xl">検証</div>
-    <div>
-      <NuxtLink to="/signin">ログイン</NuxtLink>
-      <NuxtLink to="/signup">会員登録</NuxtLink>
-      <NuxtLink to="/test">テスト（認証必要）</NuxtLink>
-    </div>
+    トップページ、担当者のスケジュールとお知らせを通知
   </div>
 </template>

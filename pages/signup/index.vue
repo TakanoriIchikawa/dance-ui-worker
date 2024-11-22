@@ -1,120 +1,83 @@
 <script setup lang="ts">
+definePageMeta({ layout: "guest", middleware: ["guest"] });
 
-definePageMeta({ middleware: ['guest'] })
-
-import { ref } from "vue";
-import { VForm } from "vuetify/components";
 import type { ErrorResponse } from "@/type/api/ErrorResponse";
-const { register } = useAuth();
-const { showSnackbar } = useSnackbar();
 
+const { register, verifyEmail } = useAuth();
+const { errors } = useErrors();
+const { showSnackbar } = useSnackbar();
+const route = useRoute();
 const router = useRouter();
-const formElement = ref<VForm>();
-const email = ref<string>('');
-const password = ref<string>('');
-const passwordConfirmation = ref<string>('');
-const emailError = ref<string>('');
-const passwordError = ref<string>('');
+const organizationId = ref<string>("");
+const email = ref<string>("");
+const isExpiration = ref<boolean>(false);
+const password = ref<string>("");
+const passwordConfirmation = ref<string>("");
 const isLoading = ref<boolean>(false);
 
-const signup = async () => {
-  const isValid = (await formElement.value?.validate())?.valid;
-  if (isValid) {
-    isLoading.value = true;
-    emailError.value = ''
-    passwordError.value = ''
+const { data } = await useAsyncData("fetchWorkerData", async () => {
+  return await verifyEmail(String(route.query.token)).then((data: { email: string, organizationId: string, isExpiration: boolean }) => {
+    return data;
+  });
+});
 
-    const params = {
-      email: email.value,
-      password: password.value,
-      password_confirmation: passwordConfirmation.value,
-    };
-    await register(params).then(() => {
-        showSnackbar("会員登録に成功しました", "success");
-        router.push("/test");
-      })
-      .catch((errorResponse: ErrorResponse) => {
-        showSnackbar(errorResponse.data.message, "error");
-        if (errorResponse.status === 422) {
-          const errors = errorResponse.data.errors
-          emailError.value = errors.email?.[0] ?? '';
-          passwordError.value = errors.password?.[0] ?? '';
-        }
-      })
-      .finally(() => {
-        isLoading.value = false;
-      });
-  }
-};
+if (data.value) {
+  organizationId.value = data.value.organizationId;
+  email.value = data.value.email;
+  isExpiration.value = data.value.isExpiration;
+}
 
-const emailRules = (v: any): boolean | string => {
-  if (!v) {
-    return "メールアドレスを入力してください";
-  }
-  // if (v.test(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-  //   return 'メールアドレスの形式を確認してください'
-  // }
-  return true;
-};
+onBeforeMount(() => {
+  errors.value = {};
+});
 
-const passwordRules = (v: any): boolean | string => {
-  if (!v) {
-    return "パスワードを入力してください";
-  }
-  return true;
-};
+if (!isExpiration.value) {
+  throw createError({ statusCode: 401 });
+}
 
-const passwordConfirmationRules = (v: any): boolean | string => {
-  if (!v) {
-    return "パスワード（確認）を入力してください";
-  }
-  return true;
+const onRegister = async (params: any) => {
+  isLoading.value = true;
+  await register(params)
+    .then(() => {
+      showSnackbar("アカウント登録に成功しました、プロフィールを設定してください", "success");
+      router.push("/account/edit");
+    })
+    .catch((errorResponse: ErrorResponse) => {
+      showSnackbar(errorResponse.data.message, "error");
+      if (errorResponse.status === 422) {
+        const errorMessages = errorResponse.data.errors;
+        errors.value.lastName = errorMessages.last_name?.[0] ?? "";
+        errors.value.firstName = errorMessages.first_name?.[0] ?? "";
+        errors.value.lastNameKana = errorMessages.last_name_kana?.[0] ?? "";
+        errors.value.firstNameKana = errorMessages.first_name_kana?.[0] ?? "";
+        errors.value.email = errorMessages.email?.[0] ?? "";
+        errors.value.password = errorMessages.password?.[0] ?? "";
+      }
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
 };
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen p-4">
-    <div class="w-full max-w-md">
-      <h1 class="text-3xl font-bold mb-8 text-center">会員登録</h1>
-      <v-form ref="formElement">
-        <v-text-field
-          v-model="email"
-          label="メールアドレス"
-          type="email"
-          placeholder="example@versionx.jp"
-          hide-details="auto"
-          class="mb-2"
-          :error="!!emailError"
-          :error-messages="emailError"
-          :rules="[(v) => emailRules(v)]"
-        ></v-text-field>
-
-        <v-text-field
-          v-model="password"
-          label="パスワード"
-          type="password"
-          placeholder=""
-          hide-details="auto"
-          class="mb-2"
-          :error="!!passwordError"
-          :error-messages="passwordError"
-          :rules="[(v) => passwordRules(v)]"
-        ></v-text-field>
-
-        <v-text-field
-          v-model="passwordConfirmation"
-          label="パスワード（確認）"
-          type="password"
-          placeholder=""
-          hide-details="auto"
-          class="mb-2"
-          :rules="[(v) => passwordConfirmationRules(v)]"
-        ></v-text-field>
-
-        <v-btn block color="primary" @click="signup" :loading="isLoading">
-          登録
-        </v-btn>
-      </v-form>
-    </div>
-  </div>
+  <v-row dense justify="center">
+    <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+      <v-card class="md:mt-5">
+        <v-card-title>
+          <v-label>
+            <h1 class="text-lg">サインアップ</h1>
+          </v-label>
+        </v-card-title>
+        <v-card-text>
+          <SignupForm
+            :organizationId="organizationId"
+            :email="email"
+            :isLoading="isLoading"
+            @save="onRegister"
+          ></SignupForm>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>

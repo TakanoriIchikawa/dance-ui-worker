@@ -1,20 +1,32 @@
+import type { StudentApi } from "./StudentApi";
+
 export interface UserApi {
   id: string;
-  name: string;
   email: string;
-  image: string;
+  nickname: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  first_name_kana: string | null;
+  last_name_kana: string | null;
+  image: string | null;
   gender: "male" | "female" | "other" | null;
   date_of_birth: string | null;
-  first_name: string;
-  last_name: string;
-  first_name_kana: string;
-  last_name_kana: string;
-  tel: string;
-  post_code: string;
-  prefecture: string;
-  city: string;
-  town: string;
-  address: string;
+  tel: string | null;
+  postal_code: string | null;
+  prefecture: string | null;
+  city: string | null;
+  town: string | null;
+  building: string | null;
   created_at: string;
   updated_at: string;
+
+  /** Accessors */
+  full_name: string | null;
+  address: string | null;
+
+  /** Relations */
+  students: StudentApi[];
+
+  /** Texts */
+  gender_text: string | null;
 }

@@ -1,26 +1,16 @@
-<script setup lang="ts">
-
-const { auth } = useAuth()
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <div>
-    <div>
-      <NuxtLink to="/">トップページ</NuxtLink>
-    </div>
-
-    <div v-if="auth">
-      <NuxtLink to="/test">テスト（認証必要）</NuxtLink>
-    </div>
-    <div v-else>
-      <NuxtLink to="/signup">会員登録</NuxtLink>
-      <NuxtLink to="/test">テスト（認証必要）</NuxtLink>
-    </div>
-
-    <main class="container">
-      <slot />
-    </main>
+  <v-app>
+    <CommonHeader />
+    <CommonSidebar />
+    <v-main class="bg-gray-200">
+      <v-container>
+        <CommonBreadcrumbs></CommonBreadcrumbs>
+        <slot />
+      </v-container>
+    </v-main>
+    <CommonFooter />
     <CommonSnackbar />
-  </div>
+  </v-app>
 </template>

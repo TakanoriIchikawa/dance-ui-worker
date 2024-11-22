@@ -5,7 +5,7 @@ const { snackbar } = useSnackbar()
 <template>
   <v-snackbar
     v-model="snackbar.isShow"
-    location="top"
+    location="bottom"
     :timeout="3000"
     :color="snackbar.color"
   >
