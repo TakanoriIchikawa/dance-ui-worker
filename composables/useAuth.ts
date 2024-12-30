@@ -20,7 +20,7 @@ export const useAuth = () => {
     });
   };
 
-  const login = async (params: { email: string, password: string }): Promise<void> => {
+  const login = async (params: { email: string, password: string, organization_id: string }): Promise<void> => {
     return authApiClient.login(params).then((data: WorkerApi) => {
       auth.value = convertWorkerApiToWorker(data);
     }).catch((errorResponse: ErrorResponse) => {

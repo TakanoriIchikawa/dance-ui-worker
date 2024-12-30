@@ -3,5 +3,5 @@ definePageMeta({ middleware: ["auth"] });
 </script>
 
 <template>
-  <div>支払情報</div>
+  <div>決済管理</div>
 </template>

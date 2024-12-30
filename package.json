@@ -16,6 +16,7 @@
     "@fullcalendar/interaction": "^6.1.15",
     "@fullcalendar/timegrid": "^6.1.15",
     "@fullcalendar/vue3": "^6.1.15",
+    "@stripe/stripe-js": "^5.2.0",
     "dayjs": "^1.11.13",
     "nuxt": "^3.13.2",
     "vue": "latest",

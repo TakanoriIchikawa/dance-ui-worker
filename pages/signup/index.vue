@@ -1,45 +1,69 @@
 <script setup lang="ts">
-definePageMeta({ layout: "guest", middleware: ["guest"] });
+definePageMeta({ layout: "guest" });
 
 import type { ErrorResponse } from "@/type/api/ErrorResponse";
 
-const { register, verifyEmail } = useAuth();
-const { errors } = useErrors();
-const { showSnackbar } = useSnackbar();
 const route = useRoute();
 const router = useRouter();
-const organizationId = ref<string>("");
+const { auth, logout, register, verifyEmail } = useAuth();
+const { organization, find } = useOrganization();
+const { errors } = useErrors();
+const { showSnackbar } = useSnackbar();
 const email = ref<string>("");
 const isExpiration = ref<boolean>(false);
-const password = ref<string>("");
-const passwordConfirmation = ref<string>("");
 const isLoading = ref<boolean>(false);
 
-const { data } = await useAsyncData("fetchWorkerData", async () => {
-  return await verifyEmail(String(route.query.token)).then((data: { email: string, organizationId: string, isExpiration: boolean }) => {
-    return data;
-  });
+const { data } = await useAsyncData("verifyEmailData", async () => {
+  return await verifyEmail(String(route.query.token))
+    .then(
+      (data: {
+        email: string;
+        organizationId: string;
+        isExpiration: boolean;
+      }) => {
+        return data;
+      }
+    )
+    .catch((error) => {
+      //
+    });
+});
+
+await useAsyncData("findOrganizationData", async () => {
+  if (data.value?.organizationId) {
+    await find(data.value.organizationId);
+    return { organization: organization.value };
+  }
 });
 
 if (data.value) {
-  organizationId.value = data.value.organizationId;
   email.value = data.value.email;
   isExpiration.value = data.value.isExpiration;
 }
-
-onBeforeMount(() => {
-  errors.value = {};
-});
 
 if (!isExpiration.value) {
   throw createError({ statusCode: 401 });
 }
 
+if (!organization.value) {
+  throw createError({ statusCode: 404 });
+}
+
+onBeforeMount(async () => {
+  errors.value = {};
+  if (auth.value) {
+    await logout();
+  }
+});
+
 const onRegister = async (params: any) => {
   isLoading.value = true;
   await register(params)
     .then(() => {
-      showSnackbar("アカウント登録に成功しました、プロフィールを設定してください", "success");
+      showSnackbar(
+        "アカウント登録に成功しました、プロフィールを設定してください",
+        "success"
+      );
       router.push("/account/edit");
     })
     .catch((errorResponse: ErrorResponse) => {
@@ -62,7 +86,7 @@ const onRegister = async (params: any) => {
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="8" lg="6" xl="4">
+    <v-col cols="12" sm="8" md="7" lg="6" xl="5">
       <v-card class="md:mt-5">
         <v-card-title>
           <v-label>
@@ -71,7 +95,9 @@ const onRegister = async (params: any) => {
         </v-card-title>
         <v-card-text>
           <SignupForm
-            :organizationId="organizationId"
+            v-if="organization"
+            :organizationName="organization?.name"
+            :organizationId="organization.id"
             :email="email"
             :isLoading="isLoading"
             @save="onRegister"

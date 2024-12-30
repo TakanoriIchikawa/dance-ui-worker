@@ -2,9 +2,11 @@ import type { OrganizationApi } from "./OrganizationApi";
 import type { GenreApi } from "./GenreApi";
 import type { CourseApi } from "./CourseApi";
 import type { LessonApi } from "./LessonApi";
+import type { Gender } from "@/type/common/Gender";
 
 export interface WorkerApi {
   id: string;
+  organization_id: string;
   email: string;
   nickname: string | null;
   first_name: string | null;
@@ -12,7 +14,7 @@ export interface WorkerApi {
   first_name_kana: string | null;
   last_name_kana: string | null;
   image: string | null;
-  gender: "male" | "female" | "other" | null;
+  gender: Gender | null;
   date_of_birth: string | null;
   tel: string | null;
   postal_code: string | null;

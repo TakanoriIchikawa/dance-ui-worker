@@ -10,8 +10,8 @@ const { breadcrumbs } = useBreadcrumbs();
 const isLoading = ref<boolean>(false);
 
 onBeforeMount(() => {
-  errors.value = {}
-})
+  errors.value = {};
+});
 
 if (!auth.value) {
   throw createError({ statusCode: 401 });
@@ -48,12 +48,11 @@ breadcrumbs.value = [
   { title: "アカウント", to: "/account" },
   { title: "編集", to: "/account/edit" },
 ];
-
 </script>
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="9" md="8" lg="6" xl="5">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-card>
         <v-card-text>
           <AccountForm :isLoading="isLoading" @save="onUpdate"></AccountForm>
@@ -62,7 +61,6 @@ breadcrumbs.value = [
     </v-col>
   </v-row>
 </template>
-
 
 <style scoped>
 .v-otp-input :deep(input) {

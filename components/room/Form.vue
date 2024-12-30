@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { VForm } from "vuetify/components";
+import type { Factory } from "@/interface/entities/Factory";
 
 interface Props {
   isLoading: boolean;
@@ -15,15 +16,21 @@ interface Emits {
 
 const emits = defineEmits<Emits>();
 
+const route = useRoute();
 const { room } = useRoom();
-const { studios, all } = useStudio();
+const { studios, all: studioAll } = useStudio();
+const { factories, all: factoryAll } = useFactory();
 const { errors } = useErrors();
-const { requiredRule, maxLengthRule, minNumberRule, maxNumberRule } =
-  validationRules();
+const { requiredRule, maxLengthRule, minNumberRule, maxNumberRule } = validationRules();
 
 await useAsyncData("allStudioData", async () => {
-  await all({});
+  await studioAll({});
   return { studios: studios.value };
+});
+
+await useAsyncData("allFactoryData", async () => {
+  await factoryAll({});
+  return { factories: factories.value };
 });
 
 const formElement = ref<VForm>();
@@ -33,7 +40,10 @@ const isRemoveImage = ref<boolean>(false);
 const name = ref<string>(room.value?.name ?? "");
 const description = ref<string>(room.value?.description ?? "");
 const capacity = ref<number | null>(room.value?.capacity ?? null);
-const studioId = ref<string>(room.value?.studio?.id ?? "");
+const studioId = ref<string>(room.value?.studio?.id ?? (String(route.query.studioId ?? "")));
+const factoryIds = ref<string[]>(
+  room.value?.factories.map((factory: Factory) => factory.id) ?? []
+);
 
 const onSave = async () => {
   const isValid = (await formElement.value?.validate())?.valid;
@@ -47,7 +57,9 @@ const onSave = async () => {
     formData.append("description", description.value);
     formData.append("capacity", capacity.value?.toString() ?? "");
     formData.append("studio_id", studioId.value);
-
+    factoryIds.value.forEach((factoryId: string) => {
+      formData.append("factory_ids[]", factoryId);
+    });
     emits("save", formData);
   }
 };
@@ -76,12 +88,12 @@ const onRemoveImage = () => {
     <v-text-field
       v-model="name"
       label="ルーム名"
-      type="text"
-      variant="underlined"
       placeholder="ルームA"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.name"
       :error-messages="errors.name"
       :rules="[
@@ -92,12 +104,13 @@ const onRemoveImage = () => {
     <v-textarea
       v-model="description"
       label="説明"
-      rows="3"
-      variant="underlined"
       placeholder="説明"
+      rows="3"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.description"
       :error-messages="errors.description"
       :rules="[(v) => maxLengthRule(v, 500, '説明')]"
@@ -108,18 +121,19 @@ const onRemoveImage = () => {
       alt="サムネイル"
       max-height="250"
       cover
-      class="mb-1"
+      class="mb-3"
     />
     <v-file-input
       v-model="file"
       label="サムネイル画像を選択"
-      variant="underlined"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       accept="image/*"
       prepend-icon=""
       prepend-inner-icon="mdi-camera"
       append-icon="mdi-image-off-outline"
-      class="mb-2"
+      class="mb-3"
       @change="onSelectedImage"
       @click:clear="onClearImage"
       @click:append="onRemoveImage"
@@ -130,10 +144,11 @@ const onRemoveImage = () => {
       :items="studios"
       item-title="name"
       item-value="id"
-      variant="underlined"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.studioId"
       :error-messages="errors.studioId"
       :rules="[(v) => requiredRule(v, 'スタジオ')]"
@@ -141,12 +156,13 @@ const onRemoveImage = () => {
     <v-text-field
       v-model="capacity"
       label="収容人数"
-      type="number"
-      variant="underlined"
       placeholder="10"
+      type="number"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.capacity"
       :error-messages="errors.capacity"
       :rules="[
@@ -154,6 +170,17 @@ const onRemoveImage = () => {
         (v) => maxNumberRule(v, 10000, '収容人数'),
       ]"
     ></v-text-field>
+    <v-label class="mt-2">設備・備品</v-label>
+    <v-chip-group v-model="factoryIds" column multiple>
+      <v-chip
+        v-for="factory in factories"
+        :key="factory.id"
+        :text="factory.name"
+        :value="factory.id"
+        :color="factory.color"
+        filter
+      ></v-chip>
+    </v-chip-group>
     <v-btn
       color="primary"
       size="large"

@@ -3,6 +3,7 @@ import type { Studio } from "@/interface/entities/Studio";
 import { convertOrganizationApiToOrganization } from "./organizationConverter";
 import { convertRoomApiToRoom } from "./roomConverter";
 import { convertCourseApiToCourse } from "./courseConverter";
+import { convertFactoryApiToFactory } from "./factoryConverter";
 import { convertGenreApiToGenre } from "./genreConverter";
 import dayjs from "dayjs";
 
@@ -30,6 +31,7 @@ export const convertStudioApiToStudio = (data: StudioApi): Studio => {
     organization: data.organization ? convertOrganizationApiToOrganization(data.organization) : null,
     rooms: data.rooms ? data.rooms.map(convertRoomApiToRoom) : [],
     courses: data.courses ? data.courses.map(convertCourseApiToCourse) : [],
+    factories: data.factories ? data.factories.map(convertFactoryApiToFactory) : [],
     genres: data.genres ? data.genres.map(convertGenreApiToGenre) : [],
 
     /** Texts */

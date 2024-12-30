@@ -2,9 +2,11 @@ import type { Organization } from "./Organization";
 import type { Genre } from "./Genre";
 import type { Course } from "./Course";
 import type { Lesson } from "./Lesson";
+import type { Gender } from "@/type/common/Gender";
 
 export interface Worker {
   id: string;
+  organizationId: string;
   email: string;
   nickname: string | null;
   firstName: string | null;
@@ -12,7 +14,7 @@ export interface Worker {
   firstNameKana: string | null;
   lastNameKana: string | null;
   image: string | null;
-  gender: "male" | "female" | "other" | null;
+  gender: Gender | null;
   dateOfBirth: string | null;
   tel: string | null;
   postalCode: string | null;

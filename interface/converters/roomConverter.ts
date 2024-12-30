@@ -2,6 +2,7 @@ import type { RoomApi } from "@/interface/api/RoomApi";
 import type { Room } from "@/interface/entities/Room";
 import { convertOrganizationApiToOrganization } from "./organizationConverter";
 import { convertStudioApiToStudio } from "./studioConverter";
+import { convertFactoryApiToFactory } from "./factoryConverter";
 import dayjs from "dayjs";
 
 export const convertRoomApiToRoom = (data: RoomApi): Room => {
@@ -21,6 +22,7 @@ export const convertRoomApiToRoom = (data: RoomApi): Room => {
     /** Relations */
     organization: data.organization ? convertOrganizationApiToOrganization(data.organization) : null,
     studio: data.studio ? convertStudioApiToStudio(data.studio) : null,
+    factories: data.factories ? data.factories.map(convertFactoryApiToFactory) : [],
 
     /** Texts */
   };

@@ -16,12 +16,14 @@ interface Emits {
 
 const emits = defineEmits<Emits>();
 
+const route = useRoute();
 const { lesson } = useLesson();
 const { courses, all: courseAll } = useCourse();
 const { workers, all: workerAll } = useWorker();
 const { rooms, all: roomAll } = useRoom();
 const { errors } = useErrors();
-const { requiredRule, maxLengthRule, maxTimeRule, minTimeRule } = validationRules();
+const { requiredRule, maxLengthRule, maxTimeRule, minTimeRule } =
+  validationRules();
 
 await useAsyncData("allCourseData", async () => {
   await courseAll({});
@@ -44,9 +46,9 @@ const description = ref<string>(lesson.value?.description ?? "");
 const dayOfWeek = ref<string>(lesson.value?.dayOfWeek ?? "");
 const startTime = ref<string>(lesson.value?.startTime ?? "");
 const endTime = ref<string>(lesson.value?.endTime ?? "");
-const courseId = ref<string>(lesson.value?.courseId ?? "");
-const roomId = ref<string>(lesson.value?.roomId ?? "");
-const workerIds = ref<string[]>(lesson.value?.workers.map((worker: Worker) => worker.id) ?? []);
+const courseId = ref<string>(lesson.value?.courseId ?? (route.query.courseId ? String(route.query.courseId) : ""));
+const roomId = ref<string>(lesson.value?.roomId ?? (route.query.roomId ? String(route.query.roomId) : ""));
+const workerIds = ref<string[]>(lesson.value?.workers.map((worker: Worker) => worker.id) ?? (route.query.workerId ? [String(route.query.workerId)] : []));
 
 const onSave = async () => {
   const isValid = (await formElement.value?.validate())?.valid;
@@ -71,12 +73,12 @@ const onSave = async () => {
     <v-text-field
       v-model="name"
       label="レッスン名"
-      type="text"
-      variant="underlined"
       placeholder="レッスンA"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.name"
       :error-messages="errors.name"
       :rules="[
@@ -87,12 +89,13 @@ const onSave = async () => {
     <v-textarea
       v-model="description"
       label="説明"
-      rows="3"
-      variant="underlined"
       placeholder="説明"
+      rows="3"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.description"
       :error-messages="errors.description"
       :rules="[(v) => maxLengthRule(v, 500, '説明')]"
@@ -103,10 +106,11 @@ const onSave = async () => {
       :items="courses"
       item-title="name"
       item-value="id"
-      variant="underlined"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.courseId"
       :error-messages="errors.courseId"
       :rules="[(v) => requiredRule(v, 'コース')]"
@@ -115,8 +119,9 @@ const onSave = async () => {
     <v-radio-group
       v-model="dayOfWeek"
       inline
+      density="compact"
       hide-details="auto"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.dayOfWeek"
       :error-messages="errors.dayOfWeek"
       :rules="[(v) => requiredRule(v, '曜日')]"
@@ -141,12 +146,13 @@ const onSave = async () => {
       <v-text-field
         v-model="startTime"
         label="開始時間"
-        type="time"
-        variant="underlined"
         placeholder=""
+        type="time"
+        variant="outlined"
+        density="compact"
         hide-details="auto"
         bg-color="white"
-        class="mb-2 max-w-[50%]"
+        class="mb-3 max-w-[50%]"
         :error="!!errors.startTime"
         :error-messages="errors.startTime"
         :rules="[
@@ -158,13 +164,13 @@ const onSave = async () => {
       <v-text-field
         v-model="endTime"
         label="終了時間"
-        type="time"
-
-        variant="underlined"
         placeholder=""
+        type="time"
+        variant="outlined"
+        density="compact"
         hide-details="auto"
         bg-color="white"
-        class="mb-2 max-w-[50%]"
+        class="mb-3 max-w-[50%]"
         :error="!!errors.endTime"
         :error-messages="errors.endTime"
         :rules="[
@@ -179,11 +185,12 @@ const onSave = async () => {
       :items="workers"
       item-title="fullName"
       item-value="id"
-      variant="underlined"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
       multiple
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.workerIds"
       :error-messages="errors.workerIds"
     ></v-autocomplete>
@@ -193,10 +200,11 @@ const onSave = async () => {
       :items="rooms"
       item-title="name"
       item-value="id"
-      variant="underlined"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.roomId"
       :error-messages="errors.roomId"
     ></v-autocomplete>

@@ -1,6 +1,7 @@
 import type { Organization } from "./Organization";
 import type { Room } from "./Room";
 import type { Course } from "./Course";
+import type { Factory } from "./Factory";
 import type { Genre } from "./Genre";
 
 export interface Studio {
@@ -26,6 +27,7 @@ export interface Studio {
   organization: Organization | null;
   rooms: Room[];
   courses: Course[];
+  factories: Factory[];
   genres: Genre[];
 
   /** Texts */

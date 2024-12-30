@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 export const convertWorkerApiToWorker = (data: WorkerApi): Worker => {
   return {
     id: data.id,
+    organizationId: data.organization_id,
     email: data.email,
     nickname: data.nickname,
     firstName: data.first_name,

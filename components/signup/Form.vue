@@ -2,6 +2,7 @@
 import { VForm } from "vuetify/components";
 
 interface Props {
+  organizationName: string;
   organizationId: string;
   email: string;
   isLoading: boolean;
@@ -52,28 +53,40 @@ const onRegister = async () => {
 <template>
   <v-form ref="formElement">
     <v-text-field
-      v-model="props.email"
-      label="メールアドレス"
+      v-model="props.organizationName"
+      label="団体・組織"
+      placeholder=""
       type="email"
       variant="underlined"
-      placeholder="example@versionx.jp"
+      density="compact"
       hide-details="auto"
       disabled
       bg-color="white"
-      class="mb-1"
+      class="mb-3"
     ></v-text-field>
-
+    <v-text-field
+      v-model="props.email"
+      label="メールアドレス"
+      placeholder="example@versionx.jp"
+      type="email"
+      variant="underlined"
+      density="compact"
+      hide-details="auto"
+      disabled
+      bg-color="white"
+      class="mb-3"
+    ></v-text-field>
     <v-row no-gutters>
       <v-col cols="6">
         <v-text-field
           v-model="lastName"
           label="苗字"
-          type="text"
-          variant="underlined"
           placeholder="山田"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 mr-1"
+          class="mb-3 mr-1"
           :error="!!errors.lastName"
           :error-messages="errors.lastName"
           :rules="[
@@ -87,12 +100,12 @@ const onRegister = async () => {
         <v-text-field
           v-model="firstName"
           label="名前"
-          type="text"
-          variant="underlined"
           placeholder="太郎"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 ml-1"
+          class="mb-3 ml-1"
           :error="!!errors.firstName"
           :error-messages="errors.firstName"
           :rules="[
@@ -107,12 +120,12 @@ const onRegister = async () => {
         <v-text-field
           v-model="lastNameKana"
           label="ミョウジ"
-          type="text"
-          variant="underlined"
           placeholder="ヤマダ"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 mr-1"
+          class="mb-3 mr-1"
           :error="!!errors.lastNameKana"
           :error-messages="errors.lastNameKana"
           :rules="[
@@ -126,12 +139,12 @@ const onRegister = async () => {
         <v-text-field
           v-model="firstNameKana"
           label="ナマエ"
-          type="text"
-          variant="underlined"
           placeholder="タロウ"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 ml-1"
+          class="mb-3 ml-1"
           :error="!!errors.firstNameKana"
           :error-messages="errors.firstNameKana"
           :rules="[
@@ -146,11 +159,12 @@ const onRegister = async () => {
     <v-text-field
       v-model="password"
       label="パスワード"
-      :type="isShowPassword ? 'text' : 'password'"
-      variant="underlined"
       placeholder=""
+      :type="isShowPassword ? 'text' : 'password'"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.password"
       :error-messages="errors.password"
       :rules="[
@@ -173,11 +187,12 @@ const onRegister = async () => {
     <v-text-field
       v-model="passwordConfirmation"
       label="パスワード（確認）"
-      :type="isShowPasswordConfirmation ? 'text' : 'password'"
-      variant="underlined"
       placeholder=""
+      :type="isShowPasswordConfirmation ? 'text' : 'password'"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
-      class="mb-2"
+      class="mb-3"
       :rules="[
         (v) => requiredRule(v, 'パスワード（確認）'),
         (v) => sameRule(v, password, 'パスワード（確認）', 'パスワード'),
@@ -200,7 +215,7 @@ const onRegister = async () => {
       color="primary"
       size="large"
       variant="elevated"
-      class="mt-5"
+      class="mt-4"
       block
       @click="onRegister"
       :loading="isLoading"

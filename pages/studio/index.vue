@@ -13,16 +13,10 @@ const { breadcrumbs } = useBreadcrumbs();
 const { smAndDown, mdAndUp } = useDisplay();
 const { showSnackbar } = useSnackbar();
 
-const keyword = ref<string>(
-  route.query.keyword ? String(route.query.keyword) : ""
-);
+const keyword = ref<string>(route.query.keyword ? String(route.query.keyword) : "");
 const page = ref<number>(route.query.page ? Number(route.query.page) : 1);
-const sortKey = ref<string>(
-  route.query.sortKey ? String(route.query.sortKey) : "created_at"
-);
-const sortOrder = ref<string>(
-  route.query.sortOrder ? String(route.query.sortOrder) : "desc"
-);
+const sortKey = ref<string>(route.query.sortKey ? String(route.query.sortKey) : "created_at");
+const sortOrder = ref<string>(route.query.sortOrder ? String(route.query.sortOrder) : "desc");
 const isLoading = ref<boolean>(false);
 
 await useAsyncData("fetchStudioData", async () => {
@@ -163,7 +157,7 @@ breadcrumbs.value = [
             @click="router.push(`/studio/create`)"
           >
             <v-icon size="20">mdi-plus</v-icon>
-            <span class="pr-2">新規登録</span>
+            <span>新規登録</span>
           </v-btn>
         </div>
       </v-col>

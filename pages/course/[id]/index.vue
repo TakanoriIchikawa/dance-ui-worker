@@ -74,56 +74,58 @@ breadcrumbs.value = [
 </script>
 
 <template>
-  <v-row justify="center">
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
-      <div v-if="mdAndUp" class="flex justify-end">
-        <v-btn
-          class=""
-          size="48"
-          variant="text"
-          prepend-icon="mdi-pencil"
-          color="blue"
-          min-width="100"
-          @click="router.push(`/course/${courseId}/edit`)"
+  <v-row justify="center" justify-xl="start">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+      <v-card class="relative">
+        <div
+          v-if="mdAndUp"
+          class="absolute top-0 right-0 z-10 flex justify-end"
         >
-          編集
-        </v-btn>
-        <v-dialog v-model="isDialog" max-width="400">
-          <template v-slot:activator="{ props: activatorProps }">
-            <v-btn
-              v-bind="activatorProps"
-              class=""
-              size="48"
-              variant="text"
-              prepend-icon="mdi-trash-can"
-              color="error"
-              min-width="100"
-            >
-              削除
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-text> {{ course?.name }}を削除しますか？ </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
+          <v-btn
+            class=""
+            size="48"
+            variant="text"
+            color="blue"
+            min-width="100"
+            @click="router.push(`/course/${courseId}/edit`)"
+          >
+            <v-icon size="20">mdi-pencil</v-icon>
+            <span class="text-base">編集</span>
+          </v-btn>
+          <v-dialog v-model="isDialog" max-width="400">
+            <template v-slot:activator="{ props: activatorProps }">
               <v-btn
-                text="削除"
+                v-bind="activatorProps"
+                class=""
+                size="48"
+                variant="text"
                 color="error"
-                width="90"
-                @click="onDestroy"
-              ></v-btn>
-              <v-btn
-                text="キャンセル"
-                width="90"
-                @click="isDialog = false"
-              ></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
-
-      <v-card>
+                min-width="100"
+              >
+                <v-icon size="20">mdi-trash-can</v-icon>
+                <span class="text-base">削除</span>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-text> {{ course?.name }}を削除しますか？ </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  text="削除"
+                  color="error"
+                  width="90"
+                  @click="onDestroy"
+                ></v-btn>
+                <v-btn
+                  text="キャンセル"
+                  width="90"
+                  @click="isDialog = false"
+                ></v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
         <v-img v-if="course?.image" max-height="250" :src="course.image" cover>
         </v-img>
         <v-card-title>
@@ -139,9 +141,19 @@ breadcrumbs.value = [
                 <span class="text-xs">スタジオ</span>
               </v-list-item-subtitle>
               <v-list-item-title>
-                <NuxtLink :to="`/studio/${course?.studioId}`">{{
-                  course?.studio?.name
-                }}</NuxtLink>
+                <v-item-group class="flex flex-wrap">
+                  <v-item v-for="studio in course?.studios" :key="studio.id">
+                    <v-btn
+                      variant="text"
+                      density="compact"
+                      size="large"
+                      slim
+                      :to="`/studio/${studio.id}`"
+                    >
+                      {{ studio.name }}
+                    </v-btn>
+                  </v-item>
+                </v-item-group>
               </v-list-item-title>
             </v-list-item>
             <v-list-item>
@@ -197,7 +209,7 @@ breadcrumbs.value = [
       </v-card>
     </v-col>
 
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-card>
         <v-card-title>
           <div class="flex items-center justify-between">
@@ -208,7 +220,7 @@ breadcrumbs.value = [
               variant="text"
               color="success"
               min-width="100"
-              @click="router.push(`/lesson/create`)"
+              @click="router.push(`/lesson/create?courseId=${courseId}`)"
             >
               <v-icon size="20">mdi-plus</v-icon>
               <span class="text-base">追加</span>
@@ -221,7 +233,7 @@ breadcrumbs.value = [
       </v-card>
     </v-col>
 
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-sheet class="p-3">
         <CommonCalendar
           :events="events"

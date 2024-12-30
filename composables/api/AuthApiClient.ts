@@ -54,7 +54,7 @@ export class AuthApiClient extends CrudApiClient<WorkerApi> implements AuthApiCl
   }
 
   async verifyEmail(token: string): Promise<verifyEmailResponse> {
-    return await apiFetch<{ data: verifyEmailResponse }>(`${this.basePath}/verify/email`, { method: "POST", body: { token } })
+    return await apiFetch<{ data: verifyEmailResponse }>(`${this.basePath}/verify/email?token=${token}`)
       .then((response: { data: verifyEmailResponse } | undefined) => {
         if (response) {
           return response.data;

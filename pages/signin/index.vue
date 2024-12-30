@@ -3,11 +3,11 @@ definePageMeta({ layout: "guest", middleware: ["guest"] });
 
 import type { ErrorResponse } from "@/type/api/ErrorResponse";
 
+const route = useRoute();
+const router = useRouter();
 const { login } = useAuth();
 const { errors } = useErrors();
 const { showSnackbar } = useSnackbar();
-const route = useRoute();
-const router = useRouter();
 const isLoading = ref<boolean>(false);
 
 const onLogin = async (params: any) => {

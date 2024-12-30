@@ -46,7 +46,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="10" lg="8" xl="6">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-card>
         <v-card-text>
           <CourseForm :isLoading="isLoading" @save="onCreate"></CourseForm>

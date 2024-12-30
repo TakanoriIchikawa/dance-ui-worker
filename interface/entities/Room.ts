@@ -1,5 +1,6 @@
 import type { Organization } from "./Organization";
 import type { Studio } from "./Studio";
+import type { Factory } from "./Factory";
 
 export interface Room {
   id: string;
@@ -17,6 +18,7 @@ export interface Room {
   /** Relations */
   organization: Organization | null;
   studio: Studio | null;
+  factories: Factory[];
 
   /** Texts */
 }

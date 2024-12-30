@@ -83,6 +83,8 @@ const onSave = async () => {
       formData.append("genre_ids[]", genreId);
     });
     emits("save", formData);
+  } else {
+    showSnackbar("入力内容を確認してください", "error");
   }
 };
 
@@ -131,12 +133,13 @@ const onSearchAddress = async () => {
         v-model="file"
         label="アバター画像を選択"
         variant="underlined"
+        density="compact"
         hide-details="auto"
         accept="image/*"
         prepend-icon=""
         prepend-inner-icon="mdi-camera"
         append-icon="mdi-image-off-outline"
-        class="mb-2"
+        class="mb-3"
         width="320"
         @change="onSelectedImage"
         @click:clear="onClearImage"
@@ -147,12 +150,12 @@ const onSearchAddress = async () => {
     <v-text-field
       v-model="nickname"
       label="ニックネーム"
-      type="text"
-      variant="underlined"
       placeholder="ヤマダ"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.nickname"
       :error-messages="errors.nickname"
       :rules="[
@@ -165,12 +168,12 @@ const onSearchAddress = async () => {
         <v-text-field
           v-model="lastName"
           label="苗字"
-          type="text"
-          variant="underlined"
           placeholder="山田"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 sm:mr-1"
+          class="mb-3 sm:mr-1"
           :error="!!errors.lastName"
           :error-messages="errors.lastName"
           :rules="[
@@ -184,12 +187,12 @@ const onSearchAddress = async () => {
         <v-text-field
           v-model="firstName"
           label="名前"
-          type="text"
-          variant="underlined"
           placeholder="太郎"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 sm:ml-1"
+          class="mb-3 sm:ml-1"
           :error="!!errors.firstName"
           :error-messages="errors.firstName"
           :rules="[
@@ -204,12 +207,12 @@ const onSearchAddress = async () => {
         <v-text-field
           v-model="lastNameKana"
           label="ミョウジ"
-          type="text"
-          variant="underlined"
           placeholder="ヤマダ"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 sm:mr-1"
+          class="mb-3 sm:mr-1"
           :error="!!errors.lastNameKana"
           :error-messages="errors.lastNameKana"
           :rules="[
@@ -222,12 +225,12 @@ const onSearchAddress = async () => {
         <v-text-field
           v-model="firstNameKana"
           label="ナマエ"
-          type="text"
-          variant="underlined"
           placeholder="タロウ"
+          variant="outlined"
+          density="compact"
           hide-details="auto"
           bg-color="white"
-          class="mb-2 sm:ml-1"
+          class="mb-3 sm:ml-1"
           :error="!!errors.firstNameKana"
           :error-messages="errors.firstNameKana"
           :rules="[
@@ -241,9 +244,10 @@ const onSearchAddress = async () => {
     <v-label class="mt-2">性別</v-label>
     <v-radio-group
       v-model="gender"
-      hide-details="auto"
       inline
-      class="mb-2"
+      density="compact"
+      hide-details="auto"
+      class="mb-3"
       :error="!!errors.gender"
       :error-messages="errors.gender"
       :rules="[(v) => requiredRule(v, '性別')]"
@@ -261,46 +265,46 @@ const onSearchAddress = async () => {
       ></v-radio>
     </v-radio-group>
 
-    <v-text-field
-      v-model="dateOfBirth"
+    <common-select-date
+      :date="dateOfBirth"
+      :clearable="true"
       label="生年月日"
-      type="date"
-      variant="underlined"
-      placeholder=""
+      placeholder="2000-01-01"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
-      :error="!!errors.dateOfBirth"
-      :error-messages="errors.dateOfBirth"
-      :rules="[]"
+      class-name="mb-3"
+      @selectedDate="(date) => dateOfBirth = date"
+    ></common-select-date>
+
+    <v-text-field
+      v-model="email"
+      label="メールアドレス"
+      placeholder=""
+      type="email"
+      variant="underlined"
+      density="compact"
+      hide-details="auto"
+      bg-color="white"
+      class="mb-3"
+      disabled
     ></v-text-field>
     <v-text-field
       v-model="tel"
       label="電話番号"
-      type="text"
-      variant="underlined"
       placeholder="09010101010"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class=""
       :error="!!errors.tel"
       :error-messages="errors.tel"
       :rules="[
         (v) => requiredRule(v, '電話番号'),
         (v) => telRule(v, '電話番号'),
       ]"
-    ></v-text-field>
-
-    <v-text-field
-      v-model="email"
-      label="メールアドレス"
-      type="email"
-      variant="underlined"
-      placeholder="example@versionx.jp"
-      hide-details="auto"
-      bg-color="white"
-      class=""
-      disabled
     ></v-text-field>
     <div class="flex items-end justify-start">
       <v-label class="mr-3 mb-7">郵便番号</v-label>
@@ -318,10 +322,11 @@ const onSearchAddress = async () => {
       v-model="prefecture"
       label="都道府県"
       :items="prefectures"
-      variant="underlined"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.prefecture"
       :error-messages="errors.prefecture"
       :rules="[(v) => requiredRule(v, '都道府県')]"
@@ -329,12 +334,12 @@ const onSearchAddress = async () => {
     <v-text-field
       v-model="city"
       label="市区町村"
-      type="text"
-      variant="underlined"
       placeholder="浜松市中央区"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.city"
       :error-messages="errors.city"
       :rules="[
@@ -345,12 +350,12 @@ const onSearchAddress = async () => {
     <v-text-field
       v-model="town"
       label="町域番地"
-      type="text"
-      variant="underlined"
       placeholder="板屋町102-15"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.town"
       :error-messages="errors.town"
       :rules="[
@@ -361,18 +366,18 @@ const onSearchAddress = async () => {
     <v-text-field
       v-model="building"
       label="建物名、部屋番号等"
-      type="text"
-      variant="underlined"
       placeholder="河合ビル"
+      variant="outlined"
+      density="compact"
       hide-details="auto"
       bg-color="white"
-      class="mb-2"
+      class="mb-3"
       :error="!!errors.building"
       :error-messages="errors.building"
       :rules="[(v) => maxLengthRule(v, 250, '建物名、部屋番号等')]"
     ></v-text-field>
 
-    <v-label class="mt-2">ジャンル</v-label>
+    <v-label class="">ジャンル</v-label>
     <v-chip-group v-model="genreIds" column multiple>
       <v-chip
         v-for="genre in genres"
@@ -383,7 +388,6 @@ const onSearchAddress = async () => {
         filter
       ></v-chip>
     </v-chip-group>
-
     <v-btn
       color="primary"
       size="large"

@@ -1,6 +1,7 @@
 import type { OrganizationApi } from "./OrganizationApi";
 import type { RoomApi } from "./RoomApi";
 import type { CourseApi } from "./CourseApi";
+import type { FactoryApi } from "./FactoryApi";
 import type { GenreApi } from "./GenreApi";
 
 export interface StudioApi {
@@ -26,5 +27,6 @@ export interface StudioApi {
   organization: OrganizationApi | null;
   rooms: RoomApi[];
   courses: CourseApi[];
+  factories: FactoryApi[];
   genres: GenreApi[];
 }

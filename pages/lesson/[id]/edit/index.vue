@@ -44,7 +44,7 @@ const onUpdate = async (params: any) => {
         errors.value.endTime = errorMessages.end_time?.[0] ?? "";
         errors.value.courseId = errorMessages.course_id?.[0] ?? "";
         errors.value.roomId = errorMessages.room_id?.[0] ?? "";
-        errors.value.workerIds = errorMessages.worker_ids?.[0] ?? "";      
+        errors.value.workerIds = errorMessages.worker_ids?.[0] ?? "";
       }
     })
     .finally(() => {
@@ -62,7 +62,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="10" lg="8" xl="6">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-card>
         <v-card-text>
           <LessonForm :isLoading="isLoading" @save="onUpdate"></LessonForm>

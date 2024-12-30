@@ -20,21 +20,15 @@
       <v-list-item prepend-icon="mdi-door" title="ルーム" to="/room"></v-list-item>
       <v-list-item prepend-icon="mdi-playlist-music" title="コース" to="/course"></v-list-item>
       <v-list-item prepend-icon="mdi-calendar" title="レッスン" to="/lesson"></v-list-item>
-      <!-- <v-list-group value="レッスン">
-        <template v-slot:activator="{ props }">
-          <v-list-item v-bind="props" prepend-icon="mdi-calendar" title="レッスン"></v-list-item>
-        </template>
-        <v-list-item title="スケジュール" to="/lesson/schedule"></v-list-item>
-        <v-list-item title="動画" to="/lesson/movie"></v-list-item>
-      </v-list-group> -->
-
       <v-list-item prepend-icon="mdi-account-check" title="講師" to="/worker"></v-list-item>
       <v-list-item prepend-icon="mdi-account-edit" title="契約者" to="/user"></v-list-item>
       <v-list-item prepend-icon="mdi-account-music" title="生徒" to="/student"></v-list-item>
+      <v-list-item prepend-icon="mdi-chat" title="チャット" to="/chat"></v-list-item>
       <v-list-item prepend-icon="mdi-calendar-star" title="イベント" to="/event"></v-list-item>
       <v-list-item prepend-icon="mdi-human-greeting" title="体験申込" to="/experience"></v-list-item>
-      <v-list-item prepend-icon="mdi-credit-card" title="支払情報" to="/payment"></v-list-item>
-      <v-list-item prepend-icon="mdi-shield-account" title="契約情報" to="/contract"></v-list-item>
+      <v-list-item prepend-icon="mdi-credit-card" title="決済管理" to="/payment"></v-list-item>
+      <v-list-item prepend-icon="mdi-playlist-edit" title="料金表" to="/payment"></v-list-item>
+      <v-list-item prepend-icon="mdi-shield-account" title="契約情報" to="/organization"></v-list-item>
     </v-list>
 
     <template v-slot:append>

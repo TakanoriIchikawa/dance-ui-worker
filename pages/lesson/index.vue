@@ -155,7 +155,7 @@ breadcrumbs.value = [
             @click="router.push(`/lesson/create`)"
           >
             <v-icon size="20">mdi-plus</v-icon>
-            <span class="pr-2">新規登録</span>
+            <span>新規登録</span>
           </v-btn>
         </div>
       </v-col>

@@ -1,4 +1,5 @@
 import type { StudentApi } from "./StudentApi";
+import type { Gender } from "@/type/common/Gender";
 
 export interface UserApi {
   id: string;
@@ -9,7 +10,7 @@ export interface UserApi {
   first_name_kana: string | null;
   last_name_kana: string | null;
   image: string | null;
-  gender: "male" | "female" | "other" | null;
+  gender: Gender | null;
   date_of_birth: string | null;
   tel: string | null;
   postal_code: string | null;

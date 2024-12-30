@@ -64,10 +64,9 @@
             <v-list>
               <v-list-item
                 lines="two"
-                :prepend-avatar="auth?.image ? auth?.image : undefined"
-                :title="auth?.nickname ?? ''"
-                :subtitle="auth?.email"
-                size="44"
+                :prepend-avatar="auth?.image ?? undefined"
+                :title="auth?.nickname ?? auth?.fullName ?? ''"
+                :subtitle="auth?.email ?? ''"
               >     
               <template v-slot:prepend>
                 <v-avatar>
@@ -89,6 +88,42 @@
               <v-list-item prepend-icon="mdi-email-outline" title="メールアドレス" to="/account/email"></v-list-item>
               <v-list-item prepend-icon="mdi-lock-outline" title="パスワード" to="/account/password"></v-list-item>
               <v-list-item prepend-icon="mdi-logout" title="ログアウト" @click="signout"></v-list-item>
+              <v-list-group value="その他のアカウント">
+                <template v-slot:activator="{ props }">
+                  <v-list-item
+                    v-bind="props"
+                    prepend-icon="mdi-account-multiple-outline"
+                    title="その他のアカウント"
+                  ></v-list-item>
+                </template>
+                <v-list-item>
+                  <v-list-item-title>
+                    <div class="flex items-center justify-start">
+                      <v-icon size="32" color="primary">mdi-account-circle</v-icon>
+                      <div class="flex flex-col">
+                        <span class="pl-2 text-sm">アカウントA</span>
+                        <v-label>
+                          <span class="pl-2 text-xs">t.ichikawa1@versionx.jp</span>
+                        </v-label>
+                      </div>
+                    </div>
+                  </v-list-item-title>
+                </v-list-item>
+                <v-list-item>
+                  <v-list-item-title>
+                    <div class="flex items-center justify-start">
+                      <v-icon size="32" color="primary">mdi-account-circle</v-icon>
+                      <div class="flex flex-col">
+                        <span class="pl-2 text-sm">アカウントB</span>
+                        <v-label>
+                          <span class="pl-2 text-xs">t.ichikawa2@versionx.jp</span>
+                        </v-label>
+                      </div>
+                    </div>
+                  </v-list-item-title>
+                </v-list-item>
+              </v-list-group>
+              <v-list-item prepend-icon="mdi-plus" title="アカウントを追加" to="/account"></v-list-item>
             </v-list>
         </v-card>
       </v-menu>

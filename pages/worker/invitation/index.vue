@@ -21,7 +21,7 @@ onBeforeMount(() => {
 });
 
 const onInvitation = async () => {
-  errors.value.email = null
+  errors.value.email = null;
   const isValid = (await formElement.value?.validate())?.valid;
   if (isValid) {
     isLoading.value = true;
@@ -39,7 +39,7 @@ const onInvitation = async () => {
       .finally(() => {
         isLoading.value = false;
       });
-    }
+  }
 };
 
 breadcrumbs.value = [
@@ -51,7 +51,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="10" lg="8" xl="6">
+    <v-col cols="12" sm="8" md="7" lg="6" xl="5">
       <v-card>
         <v-card-text>
           <p class="mb-2">
@@ -61,10 +61,10 @@ breadcrumbs.value = [
             <v-text-field
               v-model="email"
               label="メールアドレス"
-              type="email"
-              density="compact"
-              variant="outlined"
               placeholder="example@versionx.jp"
+              type="email"
+              variant="outlined"
+              density="compact"
               hide-details="auto"
               bg-color="white"
               class="mb-3"
@@ -79,7 +79,7 @@ breadcrumbs.value = [
               color="primary"
               size="large"
               variant="elevated"
-              class="mb-2"
+              class=""
               block
               @click="onInvitation"
               :loading="isLoading"

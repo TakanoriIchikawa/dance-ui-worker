@@ -26,7 +26,7 @@ const sortOrder = ref<string>(
 const isLoading = ref<boolean>(false);
 
 await useAsyncData("fetchCourseData", async () => {
-  await fetch(route.query);
+  await fetch({});
   return { courses: courses.value };
 });
 
@@ -88,7 +88,7 @@ const defaultHeaders = ref([
     isShowMobile: true,
   },
   {
-    key: "studio.name",
+    key: "studios",
     title: "スタジオ",
     align: "start" as const,
     sortable: false,
@@ -146,7 +146,7 @@ breadcrumbs.value = [
             @click="router.push(`/course/create`)"
           >
             <v-icon size="20">mdi-plus</v-icon>
-            <span class="pr-2">新規登録</span>
+            <span>新規登録</span>
           </v-btn>
         </div>
       </v-col>
@@ -166,6 +166,11 @@ breadcrumbs.value = [
     >
       <template #no-data>データが存在しません</template>
       <template #bottom></template>
+      <template #[`item.studios`]="{ item }">
+        <span v-for="studio in item.studios" :key="studio.id">
+          {{ studio.name }}
+        </span>
+      </template>
       <template #[`item.genres`]="{ item }">
         <div class="flex ga-1">
           <v-chip

@@ -21,22 +21,22 @@ breadcrumbs.value = [
 </script>
 
 <template>
-  <v-row justify="center">
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
-      <div v-if="mdAndUp" class="flex justify-end">
-        <v-btn
-          class=""
-          size="48"
-          variant="text"
-          prepend-icon="mdi-pencil"
-          color="blue"
-          min-width="100"
-          @click="router.push(`/account/edit`)"
-        >
-          編集
-        </v-btn>
-      </div>
-      <v-card>
+  <v-row justify="center" justify-xl="start">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+      <v-card class="relative">
+        <div v-if="mdAndUp" class="absolute top-0 right-0 flex justify-end">
+          <v-btn
+            class=""
+            size="48"
+            variant="text"
+            color="blue"
+            min-width="100"
+            @click="router.push(`/account/edit`)"
+          >
+            <v-icon size="20">mdi-pencil</v-icon>
+            <span class="text-base">編集</span>
+          </v-btn>
+        </div>
         <v-card-title class="bg-gray-100">
           <div class="flex flex-col items-center justify-center mt-3">
             <v-avatar size="120">

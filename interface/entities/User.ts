@@ -1,4 +1,5 @@
 import type { Student } from "./Student";
+import type { Gender } from "@/type/common/Gender";
 
 export interface User {
   id: string;
@@ -9,7 +10,7 @@ export interface User {
   firstNameKana: string | null;
   lastNameKana: string | null;
   image: string | null;
-  gender: "male" | "female" | "other" | null;
+  gender: Gender | null;
   dateOfBirth: string | null;
   tel: string | null;
   postalCode: string | null;

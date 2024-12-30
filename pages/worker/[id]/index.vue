@@ -73,45 +73,45 @@ breadcrumbs.value = [
 </script>
 
 <template>
-  <v-row justify="center">
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
-      <div v-if="mdAndUp" class="flex justify-end">
-        <v-dialog v-model="isDialog" max-width="400">
-          <template v-slot:activator="{ props: activatorProps }">
-            <v-btn
-              v-bind="activatorProps"
-              class=""
-              size="48"
-              variant="text"
-              prepend-icon="mdi-trash-can"
-              color="error"
-              min-width="100"
-            >
-              削除
-            </v-btn>
-          </template>
-
-          <v-card>
-            <v-card-text> {{ worker?.fullName }}を削除しますか？ </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
+  <v-row justify="center" justify-xl="start">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+      <v-card class="relative">
+        <div v-if="mdAndUp" class="absolute top-0 right-0 z-10 flex justify-end">
+          <v-dialog v-model="isDialog" max-width="400">
+            <template v-slot:activator="{ props: activatorProps }">
               <v-btn
-                text="削除"
+                v-bind="activatorProps"
+                class=""
+                size="48"
+                variant="text"
+                prepend-icon="mdi-trash-can"
                 color="error"
-                width="90"
-                @click="onDestroy"
-              ></v-btn>
-              <v-btn
-                text="キャンセル"
-                width="90"
-                @click="isDialog = false"
-              ></v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
-      <v-card>
+                min-width="100"
+              >
+                削除
+              </v-btn>
+            </template>
+
+            <v-card>
+              <v-card-text> {{ worker?.fullName }}を削除しますか？ </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  text="削除"
+                  color="error"
+                  width="90"
+                  @click="onDestroy"
+                ></v-btn>
+                <v-btn
+                  text="キャンセル"
+                  width="90"
+                  @click="isDialog = false"
+                ></v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
         <v-card-title class="bg-gray-100">
           <div class="flex flex-col items-center justify-center mt-3">
             <v-avatar size="120">
@@ -215,7 +215,7 @@ breadcrumbs.value = [
       </v-card>
     </v-col>
 
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-card>
         <v-card-title>
           <div class="flex items-center justify-between">
@@ -226,7 +226,7 @@ breadcrumbs.value = [
               variant="text"
               color="success"
               min-width="100"
-              @click="router.push(`/course/create`)"
+              @click="router.push(`/course/create?workerId=${workerId}`)"
             >
               <v-icon size="20">mdi-plus</v-icon>
               <span class="text-base">追加</span>
@@ -239,7 +239,7 @@ breadcrumbs.value = [
       </v-card>
     </v-col>
 
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-card>
         <v-card-title>
           <div class="flex items-center justify-between">
@@ -250,7 +250,7 @@ breadcrumbs.value = [
               variant="text"
               color="success"
               min-width="100"
-              @click="router.push(`/lesson/create`)"
+              @click="router.push(`/lesson/create?workerId=${workerId}`)"
             >
               <v-icon size="20">mdi-plus</v-icon>
               <span class="text-base">追加</span>
@@ -263,7 +263,7 @@ breadcrumbs.value = [
       </v-card>
     </v-col>
 
-    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
+    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
       <v-sheet class="p-3">
         <CommonCalendar
           :events="events"

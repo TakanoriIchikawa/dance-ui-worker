@@ -1,5 +1,6 @@
 import type { OrganizationApi } from "./OrganizationApi";
 import type { StudioApi } from "./StudioApi";
+import type { FactoryApi } from "./FactoryApi";
 
 export interface RoomApi {
   id: string;
@@ -17,6 +18,7 @@ export interface RoomApi {
   /** Relations */
   organization: OrganizationApi | null;
   studio: StudioApi | null;
+  factories: FactoryApi[];
 
   /** Texts */
 }
