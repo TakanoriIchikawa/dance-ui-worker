@@ -5,11 +5,12 @@ const { snackbar } = useSnackbar()
 <template>
   <v-snackbar
     v-model="snackbar.isShow"
-    location="bottom"
+    :location="snackbar.location"
     :timeout="3000"
     :color="snackbar.color"
+    variant="tonal"
   >
-    <span>{{ snackbar.message }}</span>
+    <p>{{ snackbar.message }}</p>
     <template #actions>
       <v-btn icon small @click="snackbar.isShow = false">
         <v-icon>mdi-close</v-icon>

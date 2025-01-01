@@ -12,6 +12,8 @@ export interface ChatApi {
   updated_at: string;
 
   /** Accessors */
+  unread_count: number;
+  last_message_at: string;
 
   /** Relations */
   organization: OrganizationApi | null;

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 definePageMeta({ middleware: ["auth"] });
 
+import dayjs from "dayjs";
 import { useDisplay } from "vuetify";
 import type { Chat } from "@/interface/entities/Chat";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();
@@ -12,15 +13,13 @@ const { paginate } = usePaginate();
 const { breadcrumbs } = useBreadcrumbs();
 const { smAndDown, mdAndUp } = useDisplay();
 const { showSnackbar } = useSnackbar();
-const tab = ref<number>(1);
-const keyword = ref<string>(
-  route.query.keyword ? String(route.query.keyword) : ""
-);
+const tab = ref<number>(route.query.is_group === 'true' ? 1 : route.query.is_group === 'false' ? 2 : 1);
+const keyword = ref<string>(route.query.keyword ? String(route.query.keyword) : "");
 const page = ref<number>(route.query.page ? Number(route.query.page) : 1);
 const isLoading = ref<boolean>(false);
 
 await useAsyncData("fetchChatData", async () => {
-  await fetch({ ...route.query, is_group: true });
+  await fetch({ ...route.query, is_group: (route.query.hasOwnProperty("is_group") ? route.query.is_group : true) });
   return { chats: chats.value };
 });
 
@@ -60,6 +59,30 @@ const onPaginate = async (pageValue: number) => {
   await onFetch();
 };
 
+const lastMessageAtText = (inputDate: string): string => {
+  const today = dayjs()
+  const lastMessageAt = dayjs(inputDate)
+  const diffDays = today.diff(lastMessageAt, "day");
+  switch (diffDays) {
+    case 0: 
+      return "今日"
+    case 1: 
+      return "昨日"
+    case 2: 
+      return "一昨日"
+    case 3: 
+      return "3日前"
+    default:
+      if (diffDays < 30) {
+        return lastMessageAt.format("MM/DD")
+      }
+      if (diffDays < 365) {
+        return `${today.diff(lastMessageAt, "month")}ヶ月前`;
+      }
+      return `${today.diff(lastMessageAt, "year")}年前`;
+  }
+}
+
 const headers = ref([
   {
     title: "",
@@ -67,7 +90,15 @@ const headers = ref([
     sortable: false,
     key: "name",
     nowrap: true,
-  }])
+  },
+  {
+    title: "",
+    align: "end" as const,
+    sortable: false,
+    key: "lastMessageAt",
+    nowrap: true,
+  },
+]);
 
 breadcrumbs.value = [
   { title: "ホーム", to: "/" },
@@ -78,7 +109,7 @@ breadcrumbs.value = [
 <template>
   <div>
     <v-row dense justify="center">
-      <v-col cols="12" sm="9" md="8" lg="7" xl="6">
+      <v-col cols="12" sm="10" md="9" lg="8" xl="7">
         <v-card>
           <v-tabs v-model="tab" fixed-tabs bg-color="primary">
             <v-tab :value="1">チャットグループ</v-tab>
@@ -127,6 +158,15 @@ breadcrumbs.value = [
                   <template #no-data>データが存在しません</template>
                   <template #headers></template>
                   <template #bottom></template>
+                  <template #[`item.lastMessageAt`]="{ item }">
+                    <v-badge
+                      v-if="item.unreadCount"
+                      color="success"
+                      :content="item.unreadCount"
+                      inline
+                    ></v-badge>
+                    {{ lastMessageAtText(item.lastMessageAt) }}
+                  </template>
                 </v-data-table-server>
               </v-tabs-window-item>
               <v-tabs-window-item :value="2">
@@ -144,6 +184,15 @@ breadcrumbs.value = [
                   <template #no-data>データが存在しません</template>
                   <template #headers></template>
                   <template #bottom></template>
+                  <template #[`item.lastMessageAt`]="{ item }">
+                    <v-badge
+                      v-if="item.unreadCount"
+                      color="success"
+                      :content="item.unreadCount"
+                      inline
+                    ></v-badge>
+                    {{ lastMessageAtText(item.lastMessageAt) }}
+                  </template>
                 </v-data-table-server>
               </v-tabs-window-item>
             </v-tabs-window>

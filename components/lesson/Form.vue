@@ -22,8 +22,8 @@ const { courses, all: courseAll } = useCourse();
 const { workers, all: workerAll } = useWorker();
 const { rooms, all: roomAll } = useRoom();
 const { errors } = useErrors();
-const { requiredRule, maxLengthRule, maxTimeRule, minTimeRule } =
-  validationRules();
+const { requiredRule, maxLengthRule, maxTimeRule, minTimeRule } = validationRules();
+const { showSnackbar } = useSnackbar();
 
 await useAsyncData("allCourseData", async () => {
   await courseAll({});
@@ -64,6 +64,8 @@ const onSave = async () => {
       worker_ids: workerIds.value,
     };
     emits("save", params);
+  } else {
+    showSnackbar("入力内容を確認してください", "error");
   }
 };
 </script>

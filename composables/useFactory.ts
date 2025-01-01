@@ -2,7 +2,7 @@ import { FactoryApiClient } from "./api/FactoryApiClient";
 import { convertFactoryApiToFactory } from "@/interface/converters/factoryConverter";
 import type { FactoryApi } from "@/interface/api/FactoryApi";
 import type { Factory } from "@/interface/entities/Factory";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const factoryApiClient = new FactoryApiClient();
 
@@ -16,12 +16,15 @@ export const useFactory = () => {
   });
 
   const all = async (params: any): Promise<void> => {
-    return factoryApiClient.all(params).then((data: FactoryApi[]) => {
-      factories.value = data.map(convertFactoryApiToFactory);
-    }).catch((errorResponse: ErrorResponse) => {
-      throw errorResponse
-    })
-  }
+    return factoryApiClient
+      .all(params)
+      .then((data: FactoryApi[]) => {
+        factories.value = data.map(convertFactoryApiToFactory);
+      })
+      .catch((errorResponse: ErrorResponse) => {
+        throw errorResponse;
+      });
+  };
 
   return {
     factory,

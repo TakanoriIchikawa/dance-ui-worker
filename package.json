@@ -18,7 +18,9 @@
     "@fullcalendar/vue3": "^6.1.15",
     "@stripe/stripe-js": "^5.2.0",
     "dayjs": "^1.11.13",
+    "laravel-echo": "^1.17.1",
     "nuxt": "^3.13.2",
+    "socket.io-client": "^2.4.0",
     "vue": "latest",
     "vue-router": "latest",
     "vuetify-nuxt-module": "^0.18.3"

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: ["auth"] });
 
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const { room, find, update } = useRoom();
@@ -31,7 +31,7 @@ const onUpdate = async (params: any) => {
   isLoading.value = true;
   await update(roomId.value, params)
     .then(() => {
-      showSnackbar("ルームの更新に成功しました", "success");
+      showSnackbar("ルームの更新に成功しました", "primary");
     })
     .catch((errorResponse: ErrorResponse) => {
       showSnackbar(errorResponse.data.message, "error");
@@ -58,7 +58,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card>
         <v-card-text>
           <RoomForm :isLoading="isLoading" @save="onUpdate"></RoomForm>

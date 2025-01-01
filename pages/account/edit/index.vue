@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: ["auth"] });
 
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const { auth, update } = useAuth();
 const { errors } = useErrors();
@@ -21,7 +21,7 @@ const onUpdate = async (params: any) => {
   isLoading.value = true;
   await update(params)
     .then(() => {
-      showSnackbar("アカウントの更新に成功しました", "success");
+      showSnackbar("アカウントの更新に成功しました", "primary");
     })
     .catch((errorResponse: ErrorResponse) => {
       showSnackbar(errorResponse.data.message, "error");
@@ -52,7 +52,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card>
         <v-card-text>
           <AccountForm :isLoading="isLoading" @save="onUpdate"></AccountForm>

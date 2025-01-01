@@ -26,6 +26,7 @@ const { workers, all: workerAll } = useWorker();
 const { genres, all: genreAll } = useGenre();
 const { errors } = useErrors();
 const { requiredRule, maxLengthRule } = validationRules();
+const { showSnackbar } = useSnackbar();
 
 await useAsyncData("allStudioData", async () => {
   await studioAll({});
@@ -67,19 +68,13 @@ const onSave = async () => {
     formData.append("description", description.value);
     formData.append("price", String(price.value));
     formData.append("is_multiple_lesson_price", String(isMultipleLessonPrice.value));
-    studioIds.value.forEach((studioId: string) => {
-      formData.append("studio_ids[]", studioId);
-    });
-    workerIds.value.forEach((workerId: string) => {
-      formData.append("worker_ids[]", workerId);
-    });
-    genreIds.value.forEach((genreId: string) => {
-      formData.append("genre_ids[]", genreId);
-    });
-    multipleLessonPrices.value.forEach((multipleLessonPrice: Partial<MultipleLessonPrice>) => {
-      formData.append("multiple_lesson_prices[]", JSON.stringify({ name: multipleLessonPrice.name, lesson_count: multipleLessonPrice.lessonCount, price: multipleLessonPrice.price}));
-    });
+    studioIds.value.forEach((studioId: string) => { formData.append("studio_ids[]", studioId) });
+    workerIds.value.forEach((workerId: string) => { formData.append("worker_ids[]", workerId) });
+    genreIds.value.forEach((genreId: string) => { formData.append("genre_ids[]", genreId) });
+    multipleLessonPrices.value.forEach((multipleLessonPrice: Partial<MultipleLessonPrice>) => { formData.append("multiple_lesson_prices[]", JSON.stringify({ name: multipleLessonPrice.name, lesson_count: multipleLessonPrice.lessonCount, price: multipleLessonPrice.price})) });
     emits("save", formData);
+  } else {
+    showSnackbar("入力内容を確認してください", "error");
   }
 };
 

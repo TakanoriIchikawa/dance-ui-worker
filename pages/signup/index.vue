@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: "guest" });
 
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();

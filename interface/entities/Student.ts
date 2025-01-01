@@ -1,5 +1,5 @@
 import type { User } from "./User";
-import type { Gender } from "@/type/common/Gender";
+import type { Gender } from "@/types/common/Gender";
 
 export interface Student {
   id: string;

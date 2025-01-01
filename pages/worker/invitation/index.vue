@@ -2,7 +2,7 @@
 definePageMeta({ middleware: ["auth"] });
 
 import { VForm } from "vuetify/components";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const router = useRouter();
 const { worker, invitation } = useWorker();
@@ -27,7 +27,7 @@ const onInvitation = async () => {
     isLoading.value = true;
     await invitation(email.value)
       .then(() => {
-        showSnackbar(`${email.value}に招待メールを送信しました`, "success");
+        showSnackbar(`${email.value}に招待メールを送信しました`, "primary");
       })
       .catch((errorResponse: ErrorResponse) => {
         showSnackbar(errorResponse.data.message, "error");

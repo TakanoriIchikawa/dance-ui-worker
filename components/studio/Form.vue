@@ -22,14 +22,7 @@ const { studio } = useStudio();
 const { factories, all: factoryAll } = useFactory();
 const { genres, all: genreAll } = useGenre();
 const { errors } = useErrors();
-const {
-  requiredRule,
-  maxLengthRule,
-  minNumberRule,
-  maxNumberRule,
-  telRule,
-  emailRule,
-} = validationRules();
+const { requiredRule, maxLengthRule, minNumberRule, maxNumberRule, telRule, emailRule } = validationRules();
 const { showSnackbar } = useSnackbar();
 
 await useAsyncData("allFactoryData", async () => {
@@ -55,12 +48,8 @@ const prefecture = ref<string>(studio.value?.prefecture ?? "");
 const city = ref<string>(studio.value?.city ?? "");
 const town = ref<string>(studio.value?.town ?? "");
 const building = ref<string>(studio.value?.building ?? "");
-const factoryIds = ref<string[]>(
-  studio.value?.factories.map((factory: Factory) => factory.id) ?? []
-);
-const genreIds = ref<string[]>(
-  studio.value?.genres.map((genre: Genre) => genre.id) ?? []
-);
+const factoryIds = ref<string[]>(studio.value?.factories.map((factory: Factory) => factory.id) ?? []);
+const genreIds = ref<string[]>(studio.value?.genres.map((genre: Genre) => genre.id) ?? []);
 
 const onSave = async () => {
   const isValid = (await formElement.value?.validate())?.valid;
@@ -86,6 +75,8 @@ const onSave = async () => {
       formData.append("genre_ids[]", genreId);
     });
     emits("save", formData);
+  } else {
+    showSnackbar("入力内容を確認してください", "error");
   }
 };
 

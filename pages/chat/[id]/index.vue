@@ -1,11 +1,13 @@
 <script setup lang="ts">
 definePageMeta({ middleware: ["auth"] });
+
 import dayjs from "dayjs";
 import type { VInfiniteScroll } from "vuetify/components";
 
 const route = useRoute();
 const { chat, find } = useChat();
-const { chatMessages, fetch } = useChatMessage();
+const { chatMessage, chatMessages, fetch } = useChatMessage();
+const { destroyAll } = useChatWorkerUnreadMessage();
 const { paginate } = usePaginate();
 const { breadcrumbs } = useBreadcrumbs();
 const { height } = useDisplay();
@@ -30,6 +32,28 @@ await useAsyncData("fetchChatMessageData", async () => {
   return { chatMessages: chatMessages.value };
 });
 
+watch(chatMessage, (newValue) => {
+  if (newValue) {
+    const container = document.querySelector(".v-infinite-scroll");
+    if (container) {
+      container.scrollTop = container.scrollHeight;
+    }
+  }
+});
+
+watch(chatMessages, async () => {
+  await destroyAll({ chat_id: chatId.value })
+});
+
+onMounted(async () => {
+  await destroyAll({ chat_id: chatId.value })
+})
+
+const textareaHeight = ref(40);
+const infiniteScrollHeight = computed(() => {
+  return height.value - (Math.min(textareaHeight.value, 184) + 200);
+});
+
 const onLoad = (options: any) => {
   setTimeout(async () => {
     if (paginate.value.currentPage == paginate.value.lastPage) {
@@ -39,7 +63,7 @@ const onLoad = (options: any) => {
       await fetch({ chat_id: chatId.value, page: nextPage }, true).then(() => {
         options.done("ok");
       });
-    }    
+    }
   }, 1000);
 };
 
@@ -88,11 +112,6 @@ const isSameMinute = (index: number): boolean => {
   );
 };
 
-const textareaHeight = ref(40);
-const infiniteScrollHeight = computed(() => {
-  return height.value - (Math.min(textareaHeight.value, 184) + 200)
-});
-
 breadcrumbs.value = [
   { title: "ホーム", to: "/" },
   { title: "チャット", to: "/chat" },
@@ -102,7 +121,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row justify="center">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6" class="pb-0">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7" class="pb-0">
       <v-infinite-scroll
         :height="infiniteScrollHeight"
         side="start"
@@ -138,13 +157,3 @@ breadcrumbs.value = [
     </v-col>
   </v-row>
 </template>
-
-<style scoped>
-:deep(.v-input__prepend) {
-  margin-inline-end: 4px !important;
-}
-
-:deep(.v-input__append) {
-  margin-inline-start: 4px !important;
-}
-</style>

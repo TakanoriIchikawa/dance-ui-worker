@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: ["auth"] });
 
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const { lesson, find, update } = useLesson();
@@ -31,7 +31,7 @@ const onUpdate = async (params: any) => {
   isLoading.value = true;
   await update(lessonId.value, params)
     .then(() => {
-      showSnackbar("レッスンの更新に成功しました", "success");
+      showSnackbar("レッスンの更新に成功しました", "primary");
     })
     .catch((errorResponse: ErrorResponse) => {
       showSnackbar(errorResponse.data.message, "error");
@@ -62,7 +62,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card>
         <v-card-text>
           <LessonForm :isLoading="isLoading" @save="onUpdate"></LessonForm>

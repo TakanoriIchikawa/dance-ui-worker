@@ -25,6 +25,7 @@ const { courses, all: courseAll } = useCourse();
 const { lessons, all: lessonAll } = useLesson();
 const { errors } = useErrors();
 const { requiredRule, maxLengthRule } = validationRules();
+const { showSnackbar } = useSnackbar();
 
 await useAsyncData("allWorkerData", async () => {
   await workerAll({});
@@ -59,8 +60,7 @@ const courseId = ref<string>();
 const lessonId = ref<string>();
 
 const onSave = async () => {
-  // const isValid = (await formElement.value?.validate())?.valid;
-  const isValid =  true
+  const isValid = (await formElement.value?.validate())?.valid;
   if (isValid) {
     const params = {
       name: name.value,
@@ -72,6 +72,8 @@ const onSave = async () => {
       user_id: userId.value,
     };
     emits("save", params);
+  } else {
+    showSnackbar("入力内容を確認してください", "error");
   }
 };
 </script>

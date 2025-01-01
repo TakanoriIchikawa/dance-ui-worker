@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { VForm } from "vuetify/components";
 import { prefectures } from "@/composables/constants/prefectures";
-import type { Gender } from "@/type/common/Gender";
+import type { Gender } from "@/types/common/Gender";
 
 interface Emits {
   (event: "next"): void;
@@ -182,7 +182,7 @@ const onSearchAddress = async () => {
       hide-details="auto"
       bg-color="white"
       class-name="mb-3"
-      @selectedDate="(date) => dateOfBirth = date"
+      @selectedDate="(date) => (dateOfBirth = date)"
     ></common-select-date>
     <v-text-field
       v-model="email"

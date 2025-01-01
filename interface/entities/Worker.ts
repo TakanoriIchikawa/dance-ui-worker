@@ -2,7 +2,7 @@ import type { Organization } from "./Organization";
 import type { Genre } from "./Genre";
 import type { Course } from "./Course";
 import type { Lesson } from "./Lesson";
-import type { Gender } from "@/type/common/Gender";
+import type { Gender } from "@/types/common/Gender";
 
 export interface Worker {
   id: string;

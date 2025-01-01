@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
-import type { Gender } from '@/type/common/Gender'
-import type { Plan } from "@/interface/entities/Organization"
+import type { Gender } from "@/types/common/Gender";
+import type { Plan } from "@/interface/entities/Organization";
 
 interface Props {
   isLoading: boolean;
@@ -21,12 +20,12 @@ const emits = defineEmits<Emits>();
 const { worker, organization, plan, cardToken } = useOrganizationRegisterInfo();
 
 const onGenderText = (gender: Gender): string => {
-  return genderText(gender)
+  return genderText(gender);
 };
 
 const onPlanText = (plan: Plan): string => {
-  return planText(plan)
-} 
+  return planText(plan);
+};
 
 const onPrev = () => {
   emits("prev");
@@ -35,7 +34,6 @@ const onPrev = () => {
 const onNext = async () => {
   emits("next");
 };
-
 </script>
 
 <template>
@@ -64,7 +62,7 @@ const onNext = async () => {
           <span class="text-xs">性別</span>
         </v-list-item-subtitle>
         <v-list-item-title>
-          {{ worker?.gender ? onGenderText(worker.gender) : '' }}
+          {{ worker?.gender ? onGenderText(worker.gender) : "" }}
         </v-list-item-title>
       </v-list-item>
       <v-list-item>
@@ -104,8 +102,8 @@ const onNext = async () => {
           <span class="text-xs">住所</span>
         </v-list-item-subtitle>
         <v-list-item-title>
-          {{ worker?.prefecture }}{{ worker?.city
-          }}{{ worker?.town }}{{ worker?.building }}
+          {{ worker?.prefecture }}{{ worker?.city }}{{ worker?.town
+          }}{{ worker?.building }}
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -174,7 +172,7 @@ const onNext = async () => {
           <span class="text-xs">プラン名</span>
         </v-list-item-subtitle>
         <v-list-item-title>
-          {{ plan ? onPlanText(plan) : '' }}
+          {{ plan ? onPlanText(plan) : "" }}
         </v-list-item-title>
       </v-list-item>
     </v-list>
@@ -216,10 +214,13 @@ const onNext = async () => {
           <v-list-item-title>
             <v-icon size="xs">mdi-currency-jpy</v-icon>3,300
           </v-list-item-title>
-          <p class="text-sm mt-2">※ 初回決済以降は、毎月同日に決済されます。ただし、月末日が存在しない場合は、その月の最終日が決済日となります。</p>
+          <p class="text-sm mt-2">
+            ※
+            初回決済以降は、毎月同日に決済されます。ただし、月末日が存在しない場合は、その月の最終日が決済日となります。
+          </p>
         </v-list-item>
       </v-list>
-      
+
       <v-divider class="mb-4 border-2 border-gray-900"></v-divider>
     </template>
 

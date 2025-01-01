@@ -2,7 +2,7 @@
 definePageMeta({ layout: "guest", middleware: ["guest"] });
 
 import { VForm } from "vuetify/components";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const { temporaryEmail } = useOrganization();
 const { errors } = useErrors();
@@ -19,13 +19,13 @@ onBeforeMount(() => {
 });
 
 const onTemporaryEmail = async () => {
-  errors.value.email = null
+  errors.value.email = null;
   const isValid = (await formElement.value?.validate())?.valid;
   if (isValid) {
     isLoading.value = true;
     await temporaryEmail(email.value)
       .then(() => {
-        showSnackbar(`${email.value}にメールを送信しました`, "success");
+        showSnackbar(`${email.value}にメールを送信しました`, "primary");
       })
       .catch((errorResponse: ErrorResponse) => {
         showSnackbar(errorResponse.data.message, "error");
@@ -37,7 +37,7 @@ const onTemporaryEmail = async () => {
       .finally(() => {
         isLoading.value = false;
       });
-    }
+  }
 };
 </script>
 

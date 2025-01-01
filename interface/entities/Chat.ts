@@ -12,6 +12,8 @@ export interface Chat {
   updatedAt: string;
 
   /** Accessors */
+  unreadCount: number;
+  lastMessageAt: string;
 
   /** Relations */
   organization: Organization | null;

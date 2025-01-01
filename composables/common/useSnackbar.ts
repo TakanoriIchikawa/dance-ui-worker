@@ -1,4 +1,5 @@
-import type { Snackbar } from "@/type/common/Snackbar";
+import type { Snackbar } from "@/types/common/Snackbar";
+import type { VSnackbar } from "vuetify/components";
 
 export const useSnackbar = () => {
   const snackbar = useState<Snackbar>("snackbar", () => {
@@ -6,34 +7,20 @@ export const useSnackbar = () => {
       isShow: false,
       message: "",
       color: "",
+      location: "top",
     };
   });
 
   const showSnackbar = (
     message: string,
-    action: "success" | "primary" | "info" | "warning" | "error"
+    color: "success" | "primary" | "info" | "warning" | "error",
+    location: NonNullable<
+      InstanceType<typeof VSnackbar>["$props"]["location"]
+    > = "top"
   ) => {
-    switch (action) {
-      case "success":
-        snackbar.value.color = "green-accent-1";
-        break;
-      case "primary":
-        snackbar.value.color = "blue-accent-1";
-        break;
-      case "info":
-        snackbar.value.color = "cyan-accent-1";
-        break;
-      case "warning":
-        snackbar.value.color = "amber-accent-1";
-        break;
-      case "error":
-        snackbar.value.color = "red-accent-1";
-        break;
-      default:
-        snackbar.value.color = "green-accent-1";
-    }
-
     snackbar.value.message = message;
+    snackbar.value.color = color;
+    snackbar.value.location = location;
     snackbar.value.isShow = true;
   };
 

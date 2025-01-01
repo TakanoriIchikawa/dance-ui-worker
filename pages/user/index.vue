@@ -3,7 +3,7 @@ definePageMeta({ middleware: ["auth"] });
 
 import { useDisplay } from "vuetify";
 import type { User } from "@/interface/entities/User";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();
@@ -14,11 +14,19 @@ const { breadcrumbs } = useBreadcrumbs();
 const { smAndDown, mdAndUp } = useDisplay();
 const { showSnackbar } = useSnackbar();
 
-const applicationUrl = ref<string>(`http://dance.localhost/organization/${auth.value?.organizationId}/application`);
-const keyword = ref<string>(route.query.keyword ? String(route.query.keyword) : "");
+const applicationUrl = ref<string>(
+  `http://dance.localhost/organization/${auth.value?.organizationId}/application`
+);
+const keyword = ref<string>(
+  route.query.keyword ? String(route.query.keyword) : ""
+);
 const page = ref<number>(route.query.page ? Number(route.query.page) : 1);
-const sortKey = ref<string>(route.query.sortKey ? String(route.query.sortKey) : "created_at");
-const sortOrder = ref<string>(route.query.sortOrder ? String(route.query.sortOrder) : "desc");
+const sortKey = ref<string>(
+  route.query.sortKey ? String(route.query.sortKey) : "created_at"
+);
+const sortOrder = ref<string>(
+  route.query.sortOrder ? String(route.query.sortOrder) : "desc"
+);
 const isLoading = ref<boolean>(false);
 const isDialog = ref<boolean>(false);
 
@@ -73,8 +81,8 @@ const onSort = async (event: { key: string; order: "desc" | "asc" }[]) => {
 
 const onCopy = async () => {
   await navigator.clipboard.writeText(applicationUrl.value);
-  showSnackbar('クリップボードにコピーしました', "success");
-}
+  showSnackbar("クリップボードにコピーしました", "primary");
+};
 
 const headers = computed(() => {
   if (smAndDown.value) {
@@ -155,7 +163,6 @@ breadcrumbs.value = [
   { title: "ホーム", to: "/" },
   { title: "契約者", to: "/user" },
 ];
-
 </script>
 
 <template>
@@ -226,11 +233,7 @@ breadcrumbs.value = [
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn
-                text="閉じる"
-                width="90"
-                @click="isDialog = false"
-              ></v-btn>
+              <v-btn text="閉じる" width="90" @click="isDialog = false"></v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>

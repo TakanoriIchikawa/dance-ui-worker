@@ -1,4 +1,4 @@
-import type { Gender } from '@/type/common/Gender'
+import type { Gender } from "@/types/common/Gender";
 import type { Plan } from "@/interface/entities/Organization";
 
 export const genderText = (gender: Gender): string => {

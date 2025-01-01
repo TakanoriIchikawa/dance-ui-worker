@@ -22,6 +22,7 @@ const { studios, all: studioAll } = useStudio();
 const { factories, all: factoryAll } = useFactory();
 const { errors } = useErrors();
 const { requiredRule, maxLengthRule, minNumberRule, maxNumberRule } = validationRules();
+const { showSnackbar } = useSnackbar();
 
 await useAsyncData("allStudioData", async () => {
   await studioAll({});
@@ -41,9 +42,7 @@ const name = ref<string>(room.value?.name ?? "");
 const description = ref<string>(room.value?.description ?? "");
 const capacity = ref<number | null>(room.value?.capacity ?? null);
 const studioId = ref<string>(room.value?.studio?.id ?? (String(route.query.studioId ?? "")));
-const factoryIds = ref<string[]>(
-  room.value?.factories.map((factory: Factory) => factory.id) ?? []
-);
+const factoryIds = ref<string[]>(room.value?.factories.map((factory: Factory) => factory.id) ?? []);
 
 const onSave = async () => {
   const isValid = (await formElement.value?.validate())?.valid;
@@ -61,6 +60,8 @@ const onSave = async () => {
       formData.append("factory_ids[]", factoryId);
     });
     emits("save", formData);
+  } else {
+    showSnackbar("入力内容を確認してください", "error");
   }
 };
 

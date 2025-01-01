@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: "guest" });
 
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();
@@ -102,7 +102,7 @@ const onRegister = async () => {
 
     await register(params)
       .then(async () => {
-        showSnackbar("アカウント登録に成功しました", "success");
+        showSnackbar("アカウント登録に成功しました", "primary");
         if (createdOrganization.value) {
           await login({
             email: email.value,
@@ -135,7 +135,7 @@ const onRegister = async () => {
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-stepper>
         <template v-slot:default="{ prev, next }">
           <v-stepper-header>

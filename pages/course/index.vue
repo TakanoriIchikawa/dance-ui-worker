@@ -3,7 +3,7 @@ definePageMeta({ middleware: ["auth"] });
 
 import { useDisplay } from "vuetify";
 import type { Course } from "@/interface/entities/Course";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();

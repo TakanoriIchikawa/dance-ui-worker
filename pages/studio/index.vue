@@ -3,7 +3,7 @@ definePageMeta({ middleware: ["auth"] });
 
 import { useDisplay } from "vuetify";
 import type { Studio } from "@/interface/entities/Studio";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();
@@ -13,10 +13,16 @@ const { breadcrumbs } = useBreadcrumbs();
 const { smAndDown, mdAndUp } = useDisplay();
 const { showSnackbar } = useSnackbar();
 
-const keyword = ref<string>(route.query.keyword ? String(route.query.keyword) : "");
+const keyword = ref<string>(
+  route.query.keyword ? String(route.query.keyword) : ""
+);
 const page = ref<number>(route.query.page ? Number(route.query.page) : 1);
-const sortKey = ref<string>(route.query.sortKey ? String(route.query.sortKey) : "created_at");
-const sortOrder = ref<string>(route.query.sortOrder ? String(route.query.sortOrder) : "desc");
+const sortKey = ref<string>(
+  route.query.sortKey ? String(route.query.sortKey) : "created_at"
+);
+const sortOrder = ref<string>(
+  route.query.sortOrder ? String(route.query.sortOrder) : "desc"
+);
 const isLoading = ref<boolean>(false);
 
 await useAsyncData("fetchStudioData", async () => {

@@ -2,7 +2,7 @@
 definePageMeta({ middleware: ["auth"] });
 
 import { useDisplay } from "vuetify";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();
@@ -30,7 +30,7 @@ const onDestroy = async () => {
   isLoading.value = true;
   await destroy(studioId.value)
     .then(() => {
-      showSnackbar("スタジオの削除に成功しました", "success");
+      showSnackbar("スタジオの削除に成功しました", "primary");
       router.push("/studio");
     })
     .catch((errorResponse: ErrorResponse) => {
@@ -50,7 +50,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row justify="center" justify-xl="start">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card class="relative">
         <div
           v-if="mdAndUp"
@@ -184,7 +184,7 @@ breadcrumbs.value = [
       </v-card>
     </v-col>
 
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card>
         <v-card-title>
           <div class="flex items-center justify-between">
@@ -208,7 +208,7 @@ breadcrumbs.value = [
       </v-card>
     </v-col>
 
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card>
         <v-card-title>
           <div class="flex items-center justify-between">

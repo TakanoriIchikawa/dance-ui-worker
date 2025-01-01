@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
 import type { ChatMessage } from "@/interface/entities/ChatMessage";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 interface Emits {
   (event: "changeTextareaHeight", height: number): void;
@@ -10,7 +10,7 @@ const emits = defineEmits<Emits>();
 
 const route = useRoute();
 const { auth } = useAuth();
-const { chatMessages, create } = useChatMessage();
+const { chatMessage, chatMessages, create } = useChatMessage();
 const { showSnackbar } = useSnackbar();
 const body = ref<string>("");
 const file = ref<File | null>(null);
@@ -25,8 +25,10 @@ const isSendable = computed((): boolean => {
 
 const onSubmitText = async () => {
   if (body.value) {
+    const tmpId = crypto.randomUUID();
     chatMessages.value.push({
       ...setNewMessage(),
+      id: tmpId,
       body: body.value,
     } as ChatMessage);
 
@@ -35,20 +37,27 @@ const onSubmitText = async () => {
       body: body.value,
     };
 
-    await create(params).then(() => {
-      body.value = "";
-      emits("changeTextareaHeight", 40)
-    })
-    .catch((error: ErrorResponse) => {
-      showSnackbar(error.data.message, "error");
-    });
+    await create(params)
+      .then(() => {
+        body.value = "";
+        emits("changeTextareaHeight", 40);
+        const index = chatMessages.value.findIndex((chatMessage: ChatMessage) => chatMessage.id === tmpId);
+        if (chatMessage.value) {
+          chatMessages.value[index].id = chatMessage.value.id;
+        }
+      })
+      .catch((error: ErrorResponse) => {
+        showSnackbar(error.data.message, "error");
+      });
   }
 };
 
 const onSubmitFile = async () => {
   if (file.value) {
+    const tmpId = crypto.randomUUID();
     chatMessages.value.push({
       ...setNewMessage(),
+      id: tmpId,
       image: URL.createObjectURL(file.value),
     } as ChatMessage);
 
@@ -56,18 +65,22 @@ const onSubmitFile = async () => {
     formData.append("chat_id", chatId.value);
     formData.append("file", file.value);
 
-    await create(formData).then(() => {
-      file.value = null;
-    })
-    .catch((error: ErrorResponse) => {
-      showSnackbar(error.data.message, "error");
-    });
+    await create(formData)
+      .then(() => {
+        file.value = null;
+        const index = chatMessages.value.findIndex((chatMessage: ChatMessage) => chatMessage.id === tmpId);
+        if (chatMessage.value) {
+          chatMessages.value[index].id = chatMessage.value.id;
+        }
+      })
+      .catch((error: ErrorResponse) => {
+        showSnackbar(error.data.message, "error");
+      });
   }
 };
 
 const setNewMessage = (): Partial<ChatMessage> => {
   return {
-    id: crypto.randomUUID(),
     chatId: chatId.value,
     workerId: auth.value?.id ?? null,
     userId: null,
@@ -77,13 +90,15 @@ const setNewMessage = (): Partial<ChatMessage> => {
     user: null,
     createdAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
     updatedAt: dayjs().format("YYYY-MM-DD HH:mm:ss"),
-  }
-}
-
-const onInputText = (event: Event) => {
-  emits("changeTextareaHeight", Math.max((event.target as HTMLTextAreaElement).scrollHeight, 40));
+  };
 };
 
+const onInputText = (event: Event) => {
+  emits(
+    "changeTextareaHeight",
+    Math.max((event.target as HTMLTextAreaElement).scrollHeight, 40)
+  );
+};
 </script>
 
 <template>
@@ -95,7 +110,7 @@ const onInputText = (event: Event) => {
     hide-details="auto"
     bg-color="white"
     prepend-icon="mdi-image"
-    class="mt-3"
+    class="mt-2"
   >
     <template v-slot:append>
       <v-btn
@@ -146,3 +161,13 @@ const onInputText = (event: Event) => {
     </template>
   </v-textarea>
 </template>
+
+<style scoped>
+:deep(.v-input__prepend) {
+  margin-inline-end: 4px !important;
+}
+
+:deep(.v-input__append) {
+  margin-inline-start: 4px !important;
+}
+</style>

@@ -1,4 +1,4 @@
-import type { SearchAddressResponse } from "@/type/api/SearchAddressResponse";
+import type { SearchAddressResponse } from "@/types/api/SearchAddressResponse";
 
 export const searchAddress = async (
   postalCode: string
@@ -7,7 +7,7 @@ export const searchAddress = async (
     const API_URL = "https://zipcloud.ibsnet.co.jp/api/search";
     const response: SearchAddressResponse = await $fetch(API_URL, {
       params: { zipcode: postalCode },
-      responseType: 'json',
+      responseType: "json",
     });
 
     if (response.status === 200 && response.results) {

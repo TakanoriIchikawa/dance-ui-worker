@@ -1,5 +1,5 @@
 import type { UserApi } from "./UserApi";
-import type { Gender } from "@/type/common/Gender";
+import type { Gender } from "@/types/common/Gender";
 
 export interface StudentApi {
   id: string;

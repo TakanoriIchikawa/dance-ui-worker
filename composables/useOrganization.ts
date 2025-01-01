@@ -4,7 +4,7 @@ import type { OrganizationApi } from "@/interface/api/OrganizationApi";
 import type { Organization, Plan } from "@/interface/entities/Organization";
 import type { Worker } from "@/interface/entities/Worker";
 import type { verifyEmailResponse } from "./api/OrganizationApiClient";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 import type { Token } from "@stripe/stripe-js";
 
 const organizationApiClient = new OrganizationApiClient();
@@ -19,23 +19,31 @@ export const useOrganization = () => {
   });
 
   const all = async (params: any): Promise<void> => {
-    return organizationApiClient.all(params).then((data: OrganizationApi[]) => {
-      organizations.value = data.map(convertOrganizationApiToOrganization);
-    }).catch((errorResponse: ErrorResponse) => {
-      throw errorResponse
-    })
-  }
+    return organizationApiClient
+      .all(params)
+      .then((data: OrganizationApi[]) => {
+        organizations.value = data.map(convertOrganizationApiToOrganization);
+      })
+      .catch((errorResponse: ErrorResponse) => {
+        throw errorResponse;
+      });
+  };
 
   const find = async (id: string): Promise<void> => {
-    return organizationApiClient.find(id).then((data: OrganizationApi) => {
-      organization.value = convertOrganizationApiToOrganization(data);
-    }).catch((errorResponse: ErrorResponse) => {
-      throw errorResponse
-    })
-  }
+    return organizationApiClient
+      .find(id)
+      .then((data: OrganizationApi) => {
+        organization.value = convertOrganizationApiToOrganization(data);
+      })
+      .catch((errorResponse: ErrorResponse) => {
+        throw errorResponse;
+      });
+  };
 
   const register = async (params: any): Promise<void> => {
-    return organizationApiClient.register(params).then((data: OrganizationApi) => {
+    return organizationApiClient
+      .register(params)
+      .then((data: OrganizationApi) => {
         organization.value = convertOrganizationApiToOrganization(data);
       })
       .catch((errorResponse: ErrorResponse) => {
@@ -44,8 +52,10 @@ export const useOrganization = () => {
   };
 
   const update = async (id: string, params: any): Promise<void> => {
-    return organizationApiClient.update(id, params).then((data: OrganizationApi) => {
-        organization.value = convertOrganizationApiToOrganization(data)
+    return organizationApiClient
+      .update(id, params)
+      .then((data: OrganizationApi) => {
+        organization.value = convertOrganizationApiToOrganization(data);
       })
       .catch((errorResponse: ErrorResponse) => {
         throw errorResponse;
@@ -53,7 +63,9 @@ export const useOrganization = () => {
   };
 
   const destroy = async (id: string): Promise<void> => {
-    return organizationApiClient.destroy(id).then(() => {
+    return organizationApiClient
+      .destroy(id)
+      .then(() => {
         organization.value = null;
       })
       .catch((errorResponse: ErrorResponse) => {
@@ -62,7 +74,9 @@ export const useOrganization = () => {
   };
 
   const temporaryEmail = async (email: string): Promise<void> => {
-    return organizationApiClient.temporaryEmail(email).then(() => {
+    return organizationApiClient
+      .temporaryEmail(email)
+      .then(() => {
         //
       })
       .catch((errorResponse: ErrorResponse) => {
@@ -70,8 +84,12 @@ export const useOrganization = () => {
       });
   };
 
-  const verifyEmail = async (token: string): Promise<{ email: string; isExpiration: boolean }> => {
-    return organizationApiClient.verifyEmail(token).then((data: verifyEmailResponse) => {
+  const verifyEmail = async (
+    token: string
+  ): Promise<{ email: string; isExpiration: boolean }> => {
+    return organizationApiClient
+      .verifyEmail(token)
+      .then((data: verifyEmailResponse) => {
         return {
           email: data.email,
           isExpiration: data.is_expiration,
@@ -100,11 +118,17 @@ export const useOrganizationRegisterInfo = () => {
 
   const email = useState<string>("email", () => "");
   const worker = useState<Partial<Worker> | null>("worker", () => null);
-  const organization = useState<Partial<Organization> | null>("organization",() => null);
+  const organization = useState<Partial<Organization> | null>(
+    "organization",
+    () => null
+  );
   const plan = useState<Plan | null>("plan", () => null);
   const cardToken = useState<Token | null>("cardToken", () => null);
   const password = useState<string>("password", () => "");
-  const passwordConfirmation = useState<string>("passwordConfirmation", () => "");
+  const passwordConfirmation = useState<string>(
+    "passwordConfirmation",
+    () => ""
+  );
 
   if (process.client) {
     const storageValue = localStorage.getItem(STORAGE_KEY);

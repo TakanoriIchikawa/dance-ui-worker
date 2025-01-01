@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ middleware: ["auth"] });
 
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const router = useRouter();
 const { chat, create } = useChat();
@@ -19,7 +19,7 @@ const onCreate = async (params: any) => {
   isLoading.value = true;
   await create(params)
     .then(() => {
-      showSnackbar("チャットグループを作成しました", "success");
+      showSnackbar("チャットグループを作成しました", "primary");
       router.push("/chat");
     })
     .catch((errorResponse: ErrorResponse) => {
@@ -47,7 +47,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row dense justify="center">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card>
         <v-card-text>
           <ChatForm :isLoading="isLoading" @save="onCreate"></ChatForm>

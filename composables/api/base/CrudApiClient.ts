@@ -1,5 +1,5 @@
-import type { PaginateResponse } from "@/type/api/PaginateResponse";
-import type { Paginate } from "@/type/common/Paginate";
+import type { PaginateResponse } from "@/types/api/PaginateResponse";
+import type { Paginate } from "@/types/common/Paginate";
 
 interface CrudApiClientInterface<S> {
   fetch: (params: any) => Promise<{ data: S[]; paginate: Paginate }>;
@@ -15,7 +15,9 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
 
   async fetch(params: any): Promise<{ paginate: Paginate; data: S[] }> {
     const queryParams = new URLSearchParams(params).toString();
-    return await apiFetch<PaginateResponse<S>>(`${this.basePath}?${queryParams}`)
+    return await apiFetch<PaginateResponse<S>>(
+      `${this.basePath}?${queryParams}`
+    )
       .then((response: PaginateResponse<S> | undefined) => {
         if (response) {
           return {
@@ -64,7 +66,10 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
 
   async create(params: any): Promise<S> {
     const body = params instanceof FormData ? params : JSON.stringify(params);
-    return await apiFetch<{ data: S }>(`${this.basePath}/`, { method: 'POST', body })
+    return await apiFetch<{ data: S }>(`${this.basePath}/`, {
+      method: "POST",
+      body,
+    })
       .then((response: { data: S } | undefined) => {
         if (response) {
           return response.data;
@@ -78,7 +83,10 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
 
   async update(id: string, params: any): Promise<S> {
     const body = params instanceof FormData ? params : JSON.stringify(params);
-    return await apiFetch<{ data: S }>(`${this.basePath}/${id}`, { method: 'PUT', body })
+    return await apiFetch<{ data: S }>(`${this.basePath}/${id}`, {
+      method: "PUT",
+      body,
+    })
       .then((response: { data: S } | undefined) => {
         if (response) {
           return response.data;
@@ -91,7 +99,7 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
   }
 
   async destroy(id: string): Promise<void> {
-    return await apiFetch<void>(`${this.basePath}/${id}`, { method: 'DELETE' })
+    return await apiFetch<void>(`${this.basePath}/${id}`, { method: "DELETE" })
       .then(() => {
         //
       })
@@ -103,10 +111,15 @@ export abstract class CrudApiClient<S> implements CrudApiClientInterface<S> {
   setErrorResponse(error: { response?: any }) {
     return {
       status: error.response ? error.response.status : 500,
-      statusText: error.response ? error.response.statusText : 'System Error',
-      data: error.response ? error.response._data : { status: 'error', message: 'システムエラーが発生しました。時間をおいて再度お試しください。', errors: {}},
-    }
+      statusText: error.response ? error.response.statusText : "System Error",
+      data: error.response
+        ? error.response._data
+        : {
+            status: "error",
+            message:
+              "システムエラーが発生しました。時間をおいて再度お試しください。",
+            errors: {},
+          },
+    };
   }
 }
-
-

@@ -4,7 +4,7 @@ definePageMeta({ middleware: ["auth"] });
 import { useDisplay } from "vuetify";
 import type { Dayjs } from "dayjs";
 import type { EventInput } from "@fullcalendar/core";
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();
@@ -32,7 +32,7 @@ const onDestroy = async () => {
   isLoading.value = true;
   await destroy(lessonId.value)
     .then(() => {
-      showSnackbar("レッスンの削除に成功しました", "success");
+      showSnackbar("レッスンの削除に成功しました", "primary");
       router.push("/lesson");
     })
     .catch((errorResponse: ErrorResponse) => {
@@ -75,7 +75,7 @@ breadcrumbs.value = [
 
 <template>
   <v-row justify="center" justify-xl="start">
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-card class="relative">
         <div
           v-if="mdAndUp"
@@ -219,7 +219,7 @@ breadcrumbs.value = [
         </v-card-text>
       </v-card>
     </v-col>
-    <v-col cols="12" sm="10" md="8" lg="7" xl="6">
+    <v-col cols="12" sm="10" md="9" lg="8" xl="7">
       <v-sheet class="p-3">
         <CommonCalendar
           :events="events"

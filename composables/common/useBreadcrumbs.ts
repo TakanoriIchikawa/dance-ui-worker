@@ -1,4 +1,4 @@
-import type { Breadcrumbs } from "@/type/common/Breadcrumbs";
+import type { Breadcrumbs } from "@/types/common/Breadcrumbs";
 
 export const useBreadcrumbs = () => {
   const breadcrumbs = useState<Breadcrumbs>("breadcrumbs", () => {

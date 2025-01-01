@@ -1,7 +1,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: "guest", middleware: ["guest"] });
 
-import type { ErrorResponse } from "@/type/api/ErrorResponse";
+import type { ErrorResponse } from "@/types/api/ErrorResponse";
 
 const route = useRoute();
 const router = useRouter();
@@ -14,7 +14,7 @@ const onLogin = async (params: any) => {
   isLoading.value = true;
   await login(params)
     .then(() => {
-      showSnackbar("ログインに成功しました", "success");
+      showSnackbar("ログインに成功しました", "primary");
       router.push(
         route.query.returnPath ? String(route.query.returnPath) : "/"
       );
@@ -31,7 +31,6 @@ const onLogin = async (params: any) => {
       isLoading.value = false;
     });
 };
-
 </script>
 
 <template>

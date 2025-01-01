@@ -16,6 +16,8 @@ export const convertChatApiToChat = (data: ChatApi): Chat => {
     updatedAt: dayjs(data.updated_at).format("YYYY-MM-DD HH:mm:ss"),
 
     /** Accessors */
+    unreadCount: data.unread_count,
+    lastMessageAt: data.last_message_at,
 
     /** Relations */
     organization: data.organization ? convertOrganizationApiToOrganization(data.organization) : null,
